@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 django = "*"
-django-tagulous = "*"
+django-tagulous = {git = "https://github.com/dubirajara/django-tagulous"}
 
 [dev-packages]
 

@@ -1,0 +1,29 @@
+{% load static %}
+<html>
+	<head>
+		<title>Blairbash</title>
+		<link rel="stylesheet" href="{% static 'qdb/style.css' %}">
+	</head>
+	<body>
+		<header class="main">
+			<h1><a href='/'>Blairbash.org</a></h1>
+		</header>
+		<nav class="main">
+			<ul>
+				<li><a>Home</a></li>
+				<li><a>Latest</a></li>
+				<li><a>Random</a></li>
+				<li><a>Top</a></li>
+				<li><a>Bottom</a></li>
+				<li><a>Search</a></li>
+				<li><a>Tags</a></li>
+				<li><a>Stats</a></li>
+				<li><a>Submit</a></li>
+			</ul>
+		</nav>
+		<section class="main">
+			{% block content %}
+			{% endblock %}
+		</section>
+	</body>
+</html>

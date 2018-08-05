@@ -1,0 +1,30 @@
+{% extends 'qdb/base.html' %}
+
+{% block content %}
+	<h1>Top Quotes</h1>
+	{% if quote_list %}
+		{% for quote in quote_list %}
+			<div class="quote">
+				<header>
+					<h1>#{{ quote.id }}</h1>
+					<button class="vote up"></button>
+					<p>
+						<span class="score">{{ quote.score|default_if_none:0 }}</span><!--
+						--><span class="votes">{{ quote.votes }}</span>
+					</p>
+					<button class="vote down"></button>
+					<p class="timestamp">{{ quote.timestamp }}</p>
+				</header>
+				<blockquote>
+					{{  quote.content }}
+				</blockquote>
+				<footer>
+					<p class="notes">{{ quote.notes }}</p>
+					<p class="tags">{{ quote.tags }}</p>
+				</footer>
+			</div>
+		{% endfor %}
+	{% else %}
+		<p>No quotes have been submitted.</p>
+	{% endif %}
+{% endblock %}

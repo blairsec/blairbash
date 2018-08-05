@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "90d57592384114385bda7945dc5c707161ca41f1b0329a345b20de7c3c73a048"
+            "sha256": "40b93ae120dd509b861494949b11e1c6ebd521e253688ec85531a2bd44fb7054"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -25,11 +25,8 @@
             "version": "==2.1"
         },
         "django-tagulous": {
-            "hashes": [
-                "sha256:593cf09f2f8b7f752388f1ee8cf4e7b8d33dfab56d23438b8dcd338f59922a76"
-            ],
-            "index": "pypi",
-            "version": "==0.13.2"
+            "git": "https://github.com/dubirajara/django-tagulous",
+            "ref": "ea13f2aa7773eca99446cb7e0fedc4056ae3916a"
         },
         "pytz": {
             "hashes": [

@@ -17,5 +17,4 @@ class Vote(models.Model):
 	quote = models.ForeignKey(Quote, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return ('+' if self.value >= 0 else '') + str(self.value) + ', ' + self.ip + ', ' + '#' + str(self.quote.id)
-		
+		return ('+' if self.value >= 0 else '') + str(self.value) + ' #' + str(self.quote.id)
