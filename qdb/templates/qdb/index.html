@@ -1,0 +1,9 @@
+{% if quote_list %}
+	{% for quote in quote_list %}
+		<h2>#{{ quote.id }}</h2>
+		<h3>{{ quote.score|default_if_none:0 }}/{{ quote.votes }}</h3>
+		<p>{{ quote.content }}</p>
+	{% endfor %}
+{% else %}
+	<p>No quotes have been submitted.</p>
+{% endif %}
