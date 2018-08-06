@@ -3,6 +3,10 @@
 	<head>
 		<title>Blairbash</title>
 		<link rel="stylesheet" href="{% static 'qdb/style.css' %}">
+		<link href="https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i|Source+Code+Pro" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		{% block css %}
+		{% endblock %}
 	</head>
 	<body>
 		<header class="main">
@@ -10,20 +14,22 @@
 		</header>
 		<nav class="main">
 			<ul>
-				<li><a>Home</a></li>
-				<li><a>Latest</a></li>
-				<li><a>Random</a></li>
-				<li><a>Top</a></li>
-				<li><a>Bottom</a></li>
-				<li><a>Search</a></li>
-				<li><a>Tags</a></li>
-				<li><a>Stats</a></li>
-				<li><a>Submit</a></li>
+				<li{% if request.path == '/' %} class='active' {% endif %}><a href='/'>Home</a></li>
+				<li{% if request.path == '/latest' %} class='active' {% endif %}><a href='/latest'>Latest</a></li>
+				<li{% if request.path == '/random' %} class='active' {% endif %}><a href='/random'>Random</a></li>
+				<li{% if request.path == '/top' %} class='active' {% endif %}><a href='/top'>Top</a></li>
+				<li{% if request.path == '/bottom' %} class='active' {% endif %}><a href='/bottom'>Bottom</a></li>
+				<li{% if request.path == '/search' %} class='active' {% endif %}><a href='/search'>Search</a></li>
+				<li{% if request.path == '/tags' %} class='active' {% endif %}><a href='/tags'>Tags</a></li>
+				<li{% if request.path == '/stats' %} class='active' {% endif %}><a href='/stats'>Stats</a></li>
+				<li{% if request.path == '/submit' %} class='active' {% endif %}><a href='/submit'>Submit</a></li>
 			</ul>
 		</nav>
 		<section class="main">
 			{% block content %}
 			{% endblock %}
 		</section>
+		{% block js %}
+		{% endblock %}
 	</body>
 </html>

@@ -5,6 +5,55 @@
 	--light-text: #555555;
 }
 
+* {
+	font-family: 'PT Sans', sans-serif;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.notice {
+	background-color: var(--primary);
+	padding: 1em;
+	border: 0.1em solid black;
+}
+
+.welcome {
+	width: 48%;
+	float: left;
+}
+
+.news {
+	width: 48%;
+	float: right;
+}
+
+.news-author {
+	padding-top: 0.5em;
+	font-weight: bold;
+}
+
+.news-author::before {
+	content: '\2014';
+}
+
+.notice a {
+	color: #555;
+}
+
+.notice p:first-child {
+	margin-top: 0;
+}
+
+.notice p:last-child {
+	margin-bottom: 0;
+}
+
 html {
 	background-color: var(--background);
 	margin: 1.5em 3em;
@@ -15,6 +64,7 @@ header.main h1 {
 	padding: 0.5em;
 	border-radius: 0.2em;
 	margin-bottom: 0;
+	padding-left: 0.7em;
 }
 
 header.main h1 a {
@@ -34,16 +84,26 @@ nav.main ul {
 nav.main ul li {
 	display: inline-block;
 	background-color: #e9e9e9;
-	padding: 0.2em 1em;
 	margin-right: 0.5em;
 	border-radius: 0 0 0.5em 0.5em;
 	box-shadow: 0 0.2em #e0e0e0;
 }
 
-nav.main ul li:hover {
+nav.main ul li a {
+	color: var(--light-text);
+	text-decoration: none;
+	display: flex;
+	padding: 0.2em 1em;
+}
+
+nav.main ul li:hover, nav.main ul li.active {
 	box-shadow: 0 0.2em #f65858;
 	background-color: var(--primary);
 	cursor: pointer;
+}
+
+nav.main ul li:hover a, nav.main ul li.active a {
+	color: black;
 }
 
 section.main {
@@ -53,8 +113,16 @@ section.main {
 	margin-top: 3em;
 }
 
+section.main::after {
+	content: ' ';
+	display: block;
+	height: 0;
+	clear: both;
+}
+
 section.main h1:first-child {
 	margin-top: 0;
+	margin-bottom: 1em;
 }
 
 div.quote {
@@ -78,7 +146,7 @@ div.quote header * {
 	font-size: 1em;
 }
 
-div.quote header h1 {
+div.quote header h1, div.quote header h1 a {
 	font-size: 1em;
 	font-weight: normal;
 	color: var(--light-text);
@@ -129,6 +197,14 @@ div.quote header button.vote.down::after {
     margin-bottom: 4px;
 }
 
+div.quote header button.vote.voted::after {
+	border-color: var(--primary);
+}
+
+div.quote header button.vote.disabled, div.quote header button.vote.voted {
+	cursor: default;
+}
+
 div.quote header .votes {
 	font-size: 0.9em;
 	color: var(--light-text);
@@ -150,13 +226,12 @@ div.quote blockquote {
 	font-size: 0.8em;
 	margin-left: 1em;
 	margin-bottom: 1em;
-	padding-left: 0.5em;
-	padding-top: 0.5em;
-	padding-bottom: 0.5em;
+	padding: 1em;
 	border-left: 1px solid #bbb;
 	background-color: #f0f0f0;
 	margin-right: 1em;
-	margin-left: calc(1em + 2px)
+	margin-left: calc(1em + 2px);
+	white-space: pre-wrap;
 }
 
 div.quote footer {
@@ -174,11 +249,193 @@ div.quote footer p {
 div.quote footer .notes::before {
 	content: 'Notes: ';
 	color: var(--light-text);
+}
+
+div.quote footer .notes {
+	color: var(--light-text);
 	font-size: 0.8em;
 }
 
 div.quote footer .tags::before {
 	content: 'Tags: ';
 	color: var(--light-text);
+}
+
+div.quote footer .tags {
+	color: var(--light-text);
 	font-size: 0.8em;
+}
+
+.page_nav, .refresh_button {
+	float: right;
+	font-size: 1rem;
+	margin-top: 0.5em;
+}
+
+.refresh_button {
+	margin-top: 0;
+}
+
+.page_nav a:first-child {
+	border-radius: 0.5em 0 0 0.5em;
+	border-right: 0.05em solid #bbb;
+}
+
+.page_nav a:last-child {
+	border-radius: 0 0.5em 0.5em 0;
+	border-left: 0.05em solid #bbb;
+}
+
+.page_nav a, .refresh_button {
+	background-color: #f5f5f5;
+	padding: 0.5em 1.5em;
+	color: var(--light-text);
+	text-decoration: none;
+	font-weight: normal;
+}
+
+.refresh_button {
+	border-radius: 0.5em;
+}
+
+.refresh_button:hover {
+	color: black;
+	background-color: var(--primary);
+	cursor: pointer;
+}
+
+.page_nav a:first-child:hover {
+	color: black;
+	background-color: var(--primary);
+	border-right: 0.05em solid #f65858;
+}
+
+.page_nav a:last-child:hover {
+	color: black;
+	background-color: var(--primary);
+	border-left: 0.05em solid #f65858;
+}
+
+.tag {
+	color: var(--light-text);
+}
+
+.tag:hover {
+	color: var(--primary);
+}
+
+.tag_1 {
+	font-size: 1em;
+}
+
+.tag_2 {
+	font-size: 2em;
+}
+
+.tag_3 {
+	font-size: 3em;
+}
+
+.tag_4 {
+	font-size: 4em;
+}
+
+.tag_5 {
+	font-size: 5em;
+}
+
+.tag_6 {
+	font-size: 6em;
+}
+
+.search {
+	width: 100% !important;
+}
+
+.select2-dropdown {
+	margin-left: 3em;
+	margin-top: 1.5em;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+	margin-top: -1px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+	margin-bottom: 5px !important;
+}
+
+input[type=text], textarea {
+	border-radius: 4px;
+	border: 1px solid #aaa;
+	height: 28px;
+	outline: none;
+	padding-left: 0.5em;
+	width: 100%;
+	font-size: 1em;
+	line-height: 28px;
+}
+
+#quoteForm input[type=text] {
+	height: 36px;
+}
+
+textarea {
+	height: 8em;
+}
+
+form input[type=text], form textarea {
+	margin-bottom: 0.5em;
+	color: #444;
+}
+
+form label {
+	display: block;
+	color: var(--light-text);
+	font-size: 0.9em;
+	padding-bottom: 0.2em;
+}
+
+form button {
+	border-radius: 4px;
+	background-color: white;
+	border: 1px solid #aaa;
+	outline: none;
+	color: var(--light-text);
+	cursor: pointer;
+	font-size: 1em;
+	margin-top: 0.7em;
+	padding: 0 0.8em;
+	height: 28px;
+}
+
+form button:hover {
+	background-color: #fcfcfc;
+}
+
+form button:focus {
+	background-color: #fafafa;
+}
+
+.messages {
+	margin-bottom: 1em;
+}
+
+.message {
+	font-weight: bold;
+}
+
+.report {
+	padding-left: 0.5em;
+	color: var(--light-text);
+	cursor: pointer;
+}
+
+.report:hover {
+	color: black;
+}
+
+.report.reported {
+	color: black;
+	cursor: default;
 }

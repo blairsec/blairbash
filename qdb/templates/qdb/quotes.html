@@ -1,30 +1,87 @@
 {% extends 'qdb/base.html' %}
 
 {% block content %}
-	<h1>Top Quotes</h1>
+	<h1>
+		{{ title }}
+		{% if not no_pages %}
+			<div class='page_nav'>
+				<a href='{{ previous_page }}'>&larr;</a><!--
+				--><a href='{{ next_page }}'>&rarr;</a>
+			</div>
+		{% else %}
+			{% if quote_list and quote_list|length > 1 %}
+			<div class='refresh_button' onclick='location.reload()'>
+				&#x21bb;
+			</div>
+			{% endif %}
+		{% endif %}
+	</h1>
+	{% block search %}
+	{% endblock %}
 	{% if quote_list %}
-		{% for quote in quote_list %}
+		{% for quote, voted, reported in quote_list %}
 			<div class="quote">
 				<header>
-					<h1>#{{ quote.id }}</h1>
-					<button class="vote up"></button>
+					<h1><a href='/{{ quote.id }}'>#{{ quote.id }}</a></h1>
+					<button id="up_{{ quote.id }}" onclick="vote({{ quote.id }}, 'up', event)" class="vote up{% if voted == 'up' %} voted{% elif voted == 'down' %} disabled{% endif %}"></button>
 					<p>
-						<span class="score">{{ quote.score|default_if_none:0 }}</span><!--
-						--><span class="votes">{{ quote.votes }}</span>
+						<span class="score" id="score_{{ quote.id }}">{{ quote.score|default_if_none:0 }}</span><!--
+						--><span class="votes" id="votes_{{ quote.id }}">{{ quote.votes }}</span>
 					</p>
-					<button class="vote down"></button>
+					<button id="down_{{ quote.id}}" onclick="vote({{ quote.id }}, 'down', event)" class="vote down{% if voted == 'down' %} voted{% elif voted == 'up' %} disabled{% endif %}"></button>
 					<p class="timestamp">{{ quote.timestamp }}</p>
+					<p class="report{% if reported %} reported{% endif %}" onclick="report({{ quote.id }}, event)">{% if not reported %}&#x2690; Report{% else %}&#x2691; Reported{% endif %}</p>
 				</header>
-				<blockquote>
-					{{  quote.content }}
-				</blockquote>
+				<blockquote>{{  quote.content }}</blockquote>
 				<footer>
 					<p class="notes">{{ quote.notes }}</p>
-					<p class="tags">{{ quote.tags }}</p>
+					<p class="tags">
+						{% for tag in quote.tags.all %}
+							<a href='/search?tag={{ tag }}' class='tag tag_{{ tag.weight }}'>{{ tag }}</a>
+						{% endfor %}
+					</p>
 				</footer>
 			</div>
 		{% endfor %}
 	{% else %}
-		<p>No quotes have been submitted.</p>
+		<p>No quotes found.</p>
 	{% endif %}
+	{% if not no_pages %}
+		<div class='page_nav'>
+			<a href='{{ previous_page }}'>&larr;</a><!--
+			--><a href='{{ next_page }}'>&rarr;</a>
+		</div>
+	{% else %}
+		{% if quote_list and quote_list|length > 1 %}
+		<div class='refresh_button' onclick='location.reload()'>
+			&#x21bb;
+		</div>
+		{% endif %}
+	{% endif %}
+	<script>
+		function vote(id, direction, event) {
+			if (event.target.classList.contains('voted') || event.target.classList.contains('disabled')) return
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '/' + id + '/' + direction, true);
+			xhr.setRequestHeader('X-CSRFToken', document.cookie.split('csrftoken=')[1].split(';')[0])
+			xhr.onload = function () {
+				window['score_'+id].innerText = parseInt(window['score_'+id].innerText) + (direction === 'up' ? 1 : -1)
+				window[direction+'_'+id].classList.add('voted')
+				window[(direction === 'up' ? 'down' : 'up') + '_' + id].classList.add('disabled')
+				window['votes_'+id].innerText = parseInt(window['votes_'+id].innerText) + 1
+			}
+			xhr.send(null)
+		}
+
+		function report(id, event) {
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '/' + id + '/report', true);
+			xhr.setRequestHeader('X-CSRFToken', document.cookie.split('csrftoken=')[1].split(';')[0])
+			xhr.onload = function () {
+				event.target.innerText = '\u2691 Reported'
+				event.target.classList.add('reported')
+			}
+			xhr.send(null)
+		}
+	</script>
 {% endblock %}

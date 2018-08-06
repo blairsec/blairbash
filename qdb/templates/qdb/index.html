@@ -1,0 +1,23 @@
+{% extends 'qdb/base.html' %}
+
+{% block content %}
+	<div class='welcome'>
+		<h1>Welcome!</h1>
+		<p><b>Welcome to <em>Blairbash.org</em>!</b> This is a database of quotes similar to the popular <a href="http://bash.org">bash.org</a>. We feature quotes about humorous experiences from Montgomery Blair High School students, teachers, and alumni. Of course, Blairbash.org quotes do not have to be related to Blair or limited to the Blair community; quotes can be about any topic and anyone familiar with the Blair community can read and post quotes. Currently, the database contains a total of {{ quotes }} quotes.</p>
+		<p>If you like a quote, vote it <em>up</em>. If you don't like a quote, vote it <em>down</em>. If you feel any of the quotes should not be in the collection, use the <em>report</em> link to request removal.</p>
+		<div class='notice'>
+			<p><b>Please note the following</b>: Blairbash.org does not have any affiliation with Montgomery Blair High School. Quotes on Blairbash.org do not necessarily reflect the views of the authors, administrators, or moderators of this site, nor do they reflect the views of Montgomery Blair High School.</p><p>The name "Blairbash.org" is not meant as a derogatory comment towards Montgomery Blair High School or any entity - it does not refer to "bashing" and should not be taken as such. The name comes from <a href="http://bash.org/">bash.org</a>, <a href="http://www.stuybash.org/">Stuybash.org</a>, and <a href="http://www.tjbash.org/">TJbash.org</a>, similar online quote databases.</p><p>Quotes on Blairbash.org have no implicit or explicit claim of validity; all quotes are unverified.</p>
+		</div>
+	</div>
+	<div class='news'>
+		<h1>News</h1>
+		{% for news in news_list %}
+			<div class='news-item'>
+				{{ news.content }}
+				<div class='news-author'>
+					{{ news.author }}, {{ news.timestamp }}
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}
