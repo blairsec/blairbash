@@ -52,8 +52,8 @@ def latest(request):
 def random(request):
 	import random
 	quote_list = []
-	
-	for i in range(10): quote_list.append(quotes[random.randint(0, len(quotes)-1)])
+	quote_indices = random.sample(range(len(quotes)), min(10, len(quotes)))
+	for i in quote_indices: quote_list.append(quotes[i])
 	return get_quotes('Random Quotes', quote_list, request, no_pages=True)
 
 def top(request):
