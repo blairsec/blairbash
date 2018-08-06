@@ -316,6 +316,19 @@ div.quote footer .tags {
 	border-left: 0.05em solid #f65858;
 }
 
+.page_nav a.disabled {
+	background-color: #f5f5f5;
+	cursor: default;
+	color: #f5f5f5;
+}
+
+.page_nav a.disabled:hover {
+	background-color: #f5f5f5;
+	cursor: default;
+	border-color: #bbb;
+	color: #f5f5f5;
+}
+
 .tag {
 	color: var(--light-text);
 }

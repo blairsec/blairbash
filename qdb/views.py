@@ -37,8 +37,8 @@ def get_quotes(title, quote_list, request, per_page=10, no_pages=False, query=Fa
 	context = {
 		'title': title,
 		'quote_list': list(zip(quotes, voted, reported)),
-		'previous_page': url.with_query(url.query.set_param('start', str(start-per_page if start-per_page > 0 else 0))),
-		'next_page': url.with_query(url.query.set_param('start', str(start+per_page))),
+		'previous_page': False if start - per_page < 0 else url.with_query(url.query.set_param('start', str(start-per_page if start-per_page > 0 else 0))),
+		'next_page': False if start + per_page >= len(quote_list) else url.with_query(url.query.set_param('start', str(start+per_page))),
 		'no_pages': no_pages,
 	}
 	if query != False: context['query'] = query
