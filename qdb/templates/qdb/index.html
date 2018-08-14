@@ -13,7 +13,7 @@
 		<h1>News</h1>
 		{% for news in news_list %}
 			<div class='news-item'>
-				{{ news.content }}
+				{{ news.content|linebreaksbr }}
 				<div class='news-author'>
 					{{ news.author }}, {{ news.timestamp }}
 				</div>
