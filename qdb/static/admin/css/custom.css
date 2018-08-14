@@ -37,3 +37,15 @@ li.changelink a, li.addlink a {
 .module tr th a {
 	color: #ea5858;
 }
+
+.module h2 {
+	background: #ea5858;
+}
+
+#changelist-filter li.selected a {
+	color: #fd5f5f !important;
+}
+
+.object-tools a:focus, .object-tools a:hover {
+	background-color: #ea5858;
+}
