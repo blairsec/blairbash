@@ -251,6 +251,11 @@ div.quote footer {
 	padding-bottom: 0.5em;
 }
 
+div.quote footer.empty {
+	border: none;
+	padding-bottom: 0.25em;
+}
+
 div.quote footer p {
 	margin: 0;
 	margin-top: 0.3em;

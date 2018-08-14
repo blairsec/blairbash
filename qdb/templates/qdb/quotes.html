@@ -33,13 +33,13 @@
 					<p class="report{% if reported %} reported{% endif %}" onclick="report({{ quote.id }}, event)">{% if not reported %}&#x2690; Report{% else %}&#x2691; Reported{% endif %}</p>
 				</header>
 				<blockquote>{{  quote.content }}</blockquote>
-				<footer>
+				<footer{% if not quotes.notes or quote.tags.all %} class='empty'{% endif %}>
 					{% if quote.notes %}<p class="notes">{{ quote.notes }}</p>{% endif %}
-					<p class="tags">
+					{% if quote.tags.all %}<p class="tags">
 						{% for tag in quote.tags.all %}
 							<a href='/search?tag={{ tag }}' class='tag tag_{{ tag.weight }}'>{{ tag }}</a>
 						{% endfor %}
-					</p>
+					</p>{% endif %}
 				</footer>
 			</div>
 		{% endfor %}
