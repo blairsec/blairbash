@@ -236,8 +236,8 @@ div.quote header .timestamp {
 }
 
 div.quote blockquote {
-	font-family: monospace;
-	font-size: 1em;
+	font-family: Consolas, Monaco, Courier New, monospace;
+	font-size: .8em;
 	margin-left: 1em;
 	margin-bottom: 1em;
 	padding: 1em;
@@ -250,9 +250,10 @@ div.quote blockquote {
 }
 
 div.quote footer {
-	border-top: 1px solid #bbb;
+	border-top: .08em solid #bbb;
 	margin-left: 1em;
 	margin-right: 1em;
+	padding-top: .3em;
 	padding-bottom: 0.5em;
 }
 
@@ -292,11 +293,7 @@ div.quote footer .tags {
 	margin-top: 0.5em;
 }
 
-.refresh_button {
-	margin-top: 0;
-}
-
-.page_nav a, .refresh_button {
+.page_nav a, .refresh_button a {
 	background-color: var(--secondary);
 	color: var(--light-text);
 	padding: 0.5em 1.5em;
@@ -304,35 +301,31 @@ div.quote footer .tags {
 	font-weight: normal;
 }
 
-.refresh_button {
+.refresh_button a {
 	border-radius: 0.5em;
 }
 
 .page_nav a:first-child {
 	border-radius: 0.5em 0 0 0.5em;
-	border-right: .05em solid var(--primary);
+	border-right: .08em solid #bbb;
 }
 
 .page_nav a:last-child {
 	border-radius: 0 0.5em 0.5em 0;
-	border-left: .05em solid var(--primary);
 }
 
-.page_nav a:hover, .refresh_button:hover {
+.page_nav a.disabled {
+	color: var(--secondary);
+}
+
+.page_nav a:hover, .refresh_button a:hover {
 	color: var(--primary);
 	cursor: pointer;
 }
 
-.page_nav a.disabled {
-	background-color: var(--secondary);
-	cursor: default;
-	color: var(--secondary);
-}
-
 .page_nav a.disabled:hover {
-	background-color: var(--secondary);
-	cursor: default;
 	color: var(--secondary);
+	cursor: default;
 }
 
 .tag {
@@ -340,7 +333,7 @@ div.quote footer .tags {
 }
 
 .cloud.tag {
-	margin-right: 10px
+	margin-right: 10px;
 }
 
 .search {
