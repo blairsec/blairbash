@@ -78,6 +78,7 @@ def vote_up(request, quote_id):
 		request.session['voted'][quote_id] = 'up'
 		request.session.save()
 		quote = get_object_or_404(Quote, pk=quote_id)
+		if not quote.approved: return HttpResponse(status=403)
 		Vote(quote=quote, ip=request.META.get('REMOTE_ADDR'), useragent=request.META.get('HTTP_USER_AGENT'), value=1).save()
 		return HttpResponse('')
 	else: return HttpResponse(status=403)
@@ -88,6 +89,7 @@ def vote_down(request, quote_id):
 		request.session['voted'][quote_id] = 'down'
 		request.session.save()
 		quote = get_object_or_404(Quote, pk=quote_id)
+		if not quote.approved: return HttpResponse(status=403)
 		Vote(quote=quote, ip=request.META.get('REMOTE_ADDR'), useragent=request.META.get('HTTP_USER_AGENT'), value=-1).save()
 		return HttpResponse('')
 	else: return HttpResponse(status=403)
@@ -98,6 +100,7 @@ def report(request, quote_id):
 		request.session['reported'][quote_id] = True
 		request.session.save()
 		quote = get_object_or_404(Quote, pk=quote_id)
+		if not quote.approved: return HttpResponse(status=403)
 		quote.reported = True
 		quote.save()
 		return HttpResponse('')
