@@ -4,14 +4,16 @@
 	<h1>
 		{% block title %}{{ title }}{% endblock %}
 		{% if not no_pages %}
-			{% if previous_page or next_page %}<div class='page_nav'>
+			{% if previous_page or next_page %}
+			<div class='page_nav'>
 				<a {% if previous_page %}href='{{ previous_page }}'{% else %}class='disabled'{% endif %}>&larr;</a><!--
 				--><a {% if next_page %}href='{{ next_page }}'{% else %}class='disabled'{% endif %}>&rarr;</a>
-			</div>{% endif %}
+			</div>
+			{% endif %}
 		{% else %}
 			{% if quote_list and quote_list|length > 1 %}
-			<div class='refresh_button' onclick='location.reload()'>
-				&#x21bb;
+			<div class='refresh_button'>
+				<a onclick="location.reload()">&#x21bb;</a>
 			</div>
 			{% endif %}
 		{% endif %}
@@ -47,14 +49,15 @@
 		<p>No quotes found.</p>
 	{% endif %}
 	{% if not no_pages %}
-		{% if previous_page or next_page %}<div class='page_nav'>
+		{% if previous_page or next_page %}
+		<div class='page_nav'>
 			<a {% if previous_page %}href='{{ previous_page }}'{% else %}class='disabled'{% endif %}>&larr;</a><!--
 			--><a {% if next_page %}href='{{ next_page }}'{% else %}class='disabled'{% endif %}>&rarr;</a>
 		</div>{% endif %}
 	{% else %}
 		{% if quote_list and quote_list|length > 1 %}
-		<div class='refresh_button' onclick='location.reload()'>
-			&#x21bb;
+		<div class='refresh_button'>
+			<a onclick="location.reload()">&#x21bb;</a>
 		</div>
 		{% endif %}
 	{% endif %}
