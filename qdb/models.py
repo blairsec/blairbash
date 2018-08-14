@@ -1,9 +1,9 @@
 from django.db import models
-import tagulous.models
+from taggit.managers import TaggableManager
 
 class Quote(models.Model):
 	content = models.TextField(blank=True)
-	tags = tagulous.models.TagField(force_lowercase=True, blank=True)
+	tags = TaggableManager()
 	timestamp = models.DateTimeField(auto_now_add=True)
 	approved = models.BooleanField(default=False)
 	reported = models.BooleanField(default=False)
@@ -14,6 +14,7 @@ class Quote(models.Model):
 
 class Vote(models.Model):
 	ip = models.GenericIPAddressField()
+	useragent = models.TextField()
 	value = models.IntegerField()
 	timestamp = models.DateTimeField(auto_now_add=True)
 	quote = models.ForeignKey(Quote, on_delete=models.CASCADE)

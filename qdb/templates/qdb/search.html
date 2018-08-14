@@ -20,13 +20,7 @@
 			$('.tag-input').select2({
 				ajax: {
 					url: '/tags/autocomplete',
-					dataType: 'json',
-					processResults: function (data) {
-						return {
-							results: data.results.map(t => { return { id: t, text: t, } }),
-							pagination: { more: data.more }
-						}
-					}
+					dataType: 'json'
 				}
 			})
 			var option = new Option('{{ tag }}', '{{ tag }}', true, true)

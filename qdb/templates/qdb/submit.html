@@ -31,14 +31,7 @@
 				tags: true,
 				ajax: {
 					url: '/tags/autocomplete',
-					dataType: 'json',
-					quietMillis: 100,
-					processResults: function (data) {
-						return {
-							results: data.results.map(t => { return { id: t, text: t, } }),
-							pagination: { more: data.more }
-						}
-					}
+					dataType: 'json'
 				}
 			})
 		})

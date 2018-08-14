@@ -34,7 +34,7 @@
 				</header>
 				<blockquote>{{  quote.content }}</blockquote>
 				<footer>
-					<p class="notes">{{ quote.notes }}</p>
+					{% if quote.notes %}<p class="notes">{{ quote.notes }}</p>{% endif %}
 					<p class="tags">
 						{% for tag in quote.tags.all %}
 							<a href='/search?tag={{ tag }}' class='tag tag_{{ tag.weight }}'>{{ tag }}</a>
@@ -58,6 +58,7 @@
 		</div>
 		{% endif %}
 	{% endif %}
+	{% csrf_token %}
 	<script>
 		function vote(id, direction, event) {
 			if (event.target.classList.contains('voted') || event.target.classList.contains('disabled')) return
