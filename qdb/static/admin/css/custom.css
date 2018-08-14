@@ -1,0 +1,39 @@
+@import url("/static/admin/css/base.css");
+
+#header {
+	background: #fd5f5f;
+	color: white;
+}
+
+#branding h1 a {
+	color: white !important;
+}
+
+.module caption {
+	background: #ea5858;
+}
+
+div.breadcrumbs {
+	background: #ea5858;
+	color: white;
+}
+
+input[type=submit] {
+	background: #fd5f5f;
+}
+
+input[type=submit].default {
+	background: #ea5858;
+}
+
+a.changelink, a.addlink {
+	color: #fd5f5f;
+}
+
+li.changelink a, li.addlink a {
+	color: #fd5f5f;
+}
+
+.module tr th a {
+	color: #ea5858;
+}
