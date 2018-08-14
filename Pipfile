@@ -5,11 +5,13 @@ name = "pypi"
 
 [packages]
 django = "*"
-urlobject = "*"
 django-taggit = "*"
 django-autocomplete-light = "*"
+urlobject = "*"
 
 [dev-packages]
+pytz = "*"
+mysql-connector = "*"
 
 [requires]
 python_version = "3.6"
