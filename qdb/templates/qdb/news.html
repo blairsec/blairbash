@@ -1,0 +1,15 @@
+{% extends 'qdb/base.html' %}
+
+{% block content %}
+	<div class='news fullwidth'>
+		<h1>News</h1>
+		{% for news in news_list %}
+			<div class='news-item'>
+				{{ news.content }}
+				<div class='news-author'>
+					{{ news.author }}, {{ news.timestamp }}
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}

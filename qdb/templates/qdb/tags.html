@@ -3,6 +3,6 @@
 {% block content %}
 	<h1>Tag Cloud</h1>
 	{% for tag in tags %}
-		<a href='/search?tag={{ tag }}' class='tag tag_{{ tag.weight }}'>{{ tag }}</a>
+		<a href='/search?tag={{ tag }}' class='tag cloud' style='font-size: {{ tag.size }}px;'>{{ tag }}</a>
 	{% endfor %}
 {% endblock %}

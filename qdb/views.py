@@ -19,7 +19,14 @@ def index(request):
 	template = loader.get_template('qdb/index.html')
 	context = {
 		'quotes': quotes.count(),
-		'news_list': News.objects.all()
+		'news_list': News.objects.order_by('-timestamp')[:3]
+	}
+	return HttpResponse(template.render(context, request))
+
+def news(request):
+	template = loader.get_template('qdb/news.html')
+	context = {
+		'news_list': News.objects.order_by('-timestamp')
 	}
 	return HttpResponse(template.render(context, request))
 
@@ -102,10 +109,15 @@ def quote(request, quote_id):
 	return get_quotes('View Quote', quote_list, request, no_pages=True)
 
 def tag_cloud(request):
-	tags = Quote.tags.tag_model.objects.filter_or_initial(quote__approved=True).distinct().weight()
+	tags = Tag.objects.filter(quote__approved=True).annotate(count=Count('quote')).order_by('name').distinct()
+	max_tag = max(map(lambda tag: tag.count, tags))
+	max_size = 35
+	min_size = 15
+	for tag in tags:
+		tag.size = (tag.count/max_tag)**0.5 * (max_size-min_size) + min_size
 	template = loader.get_template('qdb/tags.html')
 	context = {
-		'tags': tags
+		'tags': tags,
 	}
 	return HttpResponse(template.render(context, request))
 
@@ -113,7 +125,9 @@ def search(request):
 	template = loader.get_template('qdb/search.html')
 	query = request.GET.get('q', '')
 	tag = request.GET.get('tag', '')
-	quote_list = quotes.filter(content__contains=query).filter(tags__name__in=[tag])
+	quote_list = quotes.filter(content__contains=query)
+	if tag: quote_list = quote_list.filter(tags__name__in=[tag])
+	quote_list = quote_list.order_by('-timestamp')
 	return get_quotes('Search Quotes', quote_list, request, query=query, tag=tag)
 
 def submit(request):
@@ -128,7 +142,16 @@ def submit(request):
 		return HttpResponse(template.render({}, request))
 
 class TagAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        tags = Tag.objects.filter(quote__approved=True)
-        if self.q: tags = tags.filter(name__istartswith=self.q)
-        return tags
+	def get_queryset(self):
+		tags = Tag.objects.filter(quote__approved=True).annotate(count=Count('quote')).order_by('-count').distinct()
+		if self.q: tags = tags.filter(name__istartswith=self.q)
+		return tags
+
+	def get_results(self, context):
+		return [
+		    {
+		        'id': self.get_result_label(result),
+		        'text': self.get_result_label(result),
+		        'selected_text': self.get_selected_result_label(result),
+		    } for result in context['object_list']
+		]
