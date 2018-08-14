@@ -1,5 +1,5 @@
 :root {
-	--primary: #ff6161;
+	--primary: #fa5555;
 	--secondary: #f5f5f5;
 	--background: #fbfbfb;
 	--text: black;
@@ -23,7 +23,8 @@ a:hover {
 .notice {
 	background-color: var(--primary);
 	padding: 1em;
-	border: 0.1em solid black;
+	color: white;
+	border-radius: 0.5em;
 }
 
 .welcome {
@@ -53,7 +54,7 @@ a:hover {
 }
 
 .notice a {
-	color: #444;
+	color: white;
 }
 
 .notice p:first-child {
@@ -78,8 +79,9 @@ header.main h1 {
 }
 
 header.main h1 a {
-	color: black;
+	color: white;
 	text-decoration: none;
+	font-weight: 500;
 }
 
 
@@ -114,6 +116,7 @@ nav.main ul li:hover, nav.main ul li.active {
 
 nav.main ul li:hover a, nav.main ul li.active a {
 	color: black;
+	color: white;
 }
 
 section.main {
