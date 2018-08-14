@@ -222,8 +222,8 @@ div.quote header .timestamp {
 }
 
 div.quote blockquote {
-	font-family: 'monospace';
-	font-size: 0.8em;
+	font-family: monospace;
+	font-size: 1em;
 	margin-left: 1em;
 	margin-bottom: 1em;
 	padding: 1em;
@@ -232,6 +232,7 @@ div.quote blockquote {
 	margin-right: 1em;
 	margin-left: calc(1em + 2px);
 	white-space: pre-wrap;
+	line-height: 1.5em;
 }
 
 div.quote footer {

@@ -1,5 +1,4 @@
 from django.contrib import admin
-import tagulous.admin
 
 from .models import Quote, Vote, News
 
@@ -11,16 +10,16 @@ def clear_reports(modeladmin, request, queryset):
 	queryset.update(reported=False)
 clear_reports.short_description = 'Clear reports of selected quotes'
 
+@admin.register(Quote)
 class QuoteAdmin(admin.ModelAdmin):
 	readonly_fields = ('timestamp',)
 	list_filter = (
 		('approved', admin.BooleanFieldListFilter),
 		('reported', admin.BooleanFieldListFilter)
 	)
-	list_display = ('id', 'approved', 'reported', 'tags', 'timestamp')
+	list_display = ('id', 'approved', 'reported', 'timestamp')
 	search_fields = ['=id', 'content']
 	actions = [approve, clear_reports]
-tagulous.admin.register(Quote, QuoteAdmin)
 
 @admin.register(Vote)
 class VoteAdmin(admin.ModelAdmin):

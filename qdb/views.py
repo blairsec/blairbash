@@ -6,7 +6,8 @@ from django.db.models import Sum, Count
 from django.db.models.functions import Coalesce
 from django.contrib import messages
 
-from tagulous.views import autocomplete
+from dal import autocomplete
+from taggit.models import Tag
 
 from urlobject import URLObject
 
@@ -70,7 +71,7 @@ def vote_up(request, quote_id):
 		request.session['voted'][quote_id] = 'up'
 		request.session.save()
 		quote = get_object_or_404(Quote, pk=quote_id)
-		Vote(quote=quote, ip=request.META.get('REMOTE_ADDR'), value=1).save()
+		Vote(quote=quote, ip=request.META.get('REMOTE_ADDR'), useragent=request.META.get('HTTP_USER_AGENT'), value=1).save()
 		return HttpResponse('')
 	else: return HttpResponse(status=403)
 
@@ -80,7 +81,7 @@ def vote_down(request, quote_id):
 		request.session['voted'][quote_id] = 'down'
 		request.session.save()
 		quote = get_object_or_404(Quote, pk=quote_id)
-		Vote(quote=quote, ip=request.META.get('REMOTE_ADDR'), value=-1).save()
+		Vote(quote=quote, ip=request.META.get('REMOTE_ADDR'), useragent=request.META.get('HTTP_USER_AGENT'), value=-1).save()
 		return HttpResponse('')
 	else: return HttpResponse(status=403)
 
@@ -112,17 +113,22 @@ def search(request):
 	template = loader.get_template('qdb/search.html')
 	query = request.GET.get('q', '')
 	tag = request.GET.get('tag', '')
-	quote_list = quotes.filter(content__contains=query).filter(tags=tag)
+	quote_list = quotes.filter(content__contains=query).filter(tags__name__in=[tag])
 	return get_quotes('Search Quotes', quote_list, request, query=query, tag=tag)
 
 def submit(request):
 	if request.method == 'POST':
-		Quote(content=request.POST['content'], tags=request.POST.getlist('tags[]'), notes=request.POST['notes']).save()
+		quote = Quote(content=request.POST['content'], notes=request.POST['notes'])
+		quote.save()
+		quote.tags.add(*request.POST.getlist('tags[]'))
 		messages.success(request, 'Your quote has been sumitted for approval. An administrator will review it shortly.')
 		return redirect('/submit')
 	else:
 		template = loader.get_template('qdb/submit.html')
 		return HttpResponse(template.render({}, request))
 
-def quote_tags_autocomplete(request):
-	return autocomplete(request, Quote.tags.tag_model.objects.filter(quote__approved=True).distinct())
+class TagAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        tags = Tag.objects.filter(quote__approved=True)
+        if self.q: tags = tags.filter(name__istartswith=self.q)
+        return tags
