@@ -1,12 +1,12 @@
 {% extends 'qdb/base.html' %}
 
 {% block content %}
-	<div class='news fullwidth'>
+	<div class="news fullwidth">
 		<h1>{% block title %}News{% endblock %}</h1>
 		{% for news in news_list %}
-			<div class='news-item'>
+			<div class="news-item">
 				{{ news.content }}
-				<div class='news-author'>
+				<div class="news-author">
 					{{ news.author }}, {{ news.timestamp }}
 				</div>
 			</div>

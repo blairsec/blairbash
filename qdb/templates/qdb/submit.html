@@ -7,23 +7,23 @@
 {% block content %}
 	<h1>{% block title %}Submit Quote{% endblock %}</h1>
 	{% if messages %}
-		<div class='messages'>
+		<div class="messages">
 			{% for message in messages %}
-				<div class='message'>{{ message }}</div>
+				<div class="message">{{ message }}</div>
 			{% endfor %}
 		</div>
 	{% endif %}
-	<form id='quoteForm' method='POST'>
+	<form id="quoteForm" method="POST">
 		{% csrf_token %}
 		<div><label>Content:</label><textarea name="content" form="quoteForm"></textarea></div>
 		<div><label>Notes:</label><input name="notes" type="text"></div>
-		<div><label>Tags:</label><select style='width: 100%' class='tag-input' multiple="multiple" name='tags[]'></select></div>
+		<div><label>Tags:</label><select style='width: 100%' class="tag-input" multiple="multiple" name="tags[]"></select></div>
 		<button type="submit">Submit Quote for Approval</button>
 	</form>
 {% endblock %}
 
 {% block js %}
-	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 	<script>
 		$(document).ready(function () {
