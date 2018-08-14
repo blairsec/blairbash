@@ -2,7 +2,7 @@
 
 {% block content %}
 	<h1>
-		{{ title }}
+		{% block title %}{{ title }}{% endblock %}
 		{% if not no_pages %}
 			{% if previous_page or next_page %}<div class='page_nav'>
 				<a {% if previous_page %}href='{{ previous_page }}'{% else %}class='disabled'{% endif %}>&larr;</a><!--

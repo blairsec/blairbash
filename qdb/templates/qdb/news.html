@@ -2,7 +2,7 @@
 
 {% block content %}
 	<div class='news fullwidth'>
-		<h1>News</h1>
+		<h1>{% block title %}News{% endblock %}</h1>
 		{% for news in news_list %}
 			<div class='news-item'>
 				{{ news.content }}

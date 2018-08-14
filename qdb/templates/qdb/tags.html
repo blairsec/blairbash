@@ -1,7 +1,7 @@
 {% extends 'qdb/base.html' %}
 
 {% block content %}
-	<h1>Tag Cloud</h1>
+	<h1>{% block title %}Tag Cloud{% endblock %}</h1>
 	{% for tag in tags %}
 		<a href='/search?tag={{ tag|urlencode }}' class='tag cloud' style='font-size: {{ tag.size }}px;'>{{ tag }}</a>
 	{% endfor %}

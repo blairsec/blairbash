@@ -2,7 +2,7 @@
 
 {% block content %}
 	<div class='welcome'>
-		<h1>Welcome!</h1>
+		<h1>{% block title %}Welcome{% endblock %}!</h1>
 		<p><b>Welcome to <em>Blairbash.org</em>!</b> This is a database of quotes similar to the popular <a href="http://bash.org">bash.org</a>. We feature quotes about humorous experiences from Montgomery Blair High School students, teachers, and alumni. Of course, Blairbash.org quotes do not have to be related to Blair or limited to the Blair community; quotes can be about any topic and anyone familiar with the Blair community can read and post quotes. Currently, the database contains a total of {{ quotes }} quotes.</p>
 		<p>If you like a quote, vote it <em>up</em>. If you don't like a quote, vote it <em>down</em>. If you feel any of the quotes should not be in the collection, use the <em>report</em> link to request removal.</p>
 		<div class='notice'>
