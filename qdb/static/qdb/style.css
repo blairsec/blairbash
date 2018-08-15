@@ -442,3 +442,41 @@ div.grecaptcha-badge {
 	transform-origin: left center;
 	transform: scale(0.7, 0.7);
 }
+
+@media only screen and (max-width: 600px) {
+	html {
+		background-color: var(--background);
+		margin: 0.5em;
+	}
+
+	.page_nav, .refresh_button {
+		float: none;
+		font-size: 1rem;
+		margin-top: 1.5em;
+		text-align: center;
+	}
+
+	section.main {
+		padding: 1em;
+	}
+
+	nav.main ul {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	nav.main ul li {
+		flex: 1 1 4em;
+	}
+
+	nav.main ul li a {
+		justify-content: center;
+	}
+
+	.welcome, .news {
+		width: 100%;
+	}
+	.welcome {
+		margin-bottom: 2em;
+	}
+}
