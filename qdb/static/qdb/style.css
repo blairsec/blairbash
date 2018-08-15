@@ -431,6 +431,10 @@ form button:focus {
 	cursor: default;
 }
 
+body section.main + div:last-child {
+	height: 0;
+}
+
 div.grecaptcha-badge {
 	position: relative !important;
 	top: -4.5em;
