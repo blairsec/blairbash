@@ -137,6 +137,7 @@ section.main::after {
 }
 
 section.main h1:first-child {
+	font-weight: normal;
 	margin-top: 0;
 	margin-bottom: 1em;
 }
@@ -416,7 +417,7 @@ form button:focus {
 }
 
 .message {
-	font-weight: bold;
+	font-style: italic;
 }
 
 .report {

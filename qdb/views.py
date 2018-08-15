@@ -138,7 +138,7 @@ def submit(request):
 		quote = Quote(content=request.POST['content'], notes=request.POST['notes'])
 		quote.save()
 		quote.tags.add(*request.POST.getlist('tags[]'))
-		messages.success(request, 'Your quote has been sumitted for approval. An administrator will review it shortly.')
+		messages.success(request, 'Your quote has been submitted for approval. An administrator will review it shortly.')
 		return redirect('/submit')
 	else:
 		template = loader.get_template('qdb/submit.html')
