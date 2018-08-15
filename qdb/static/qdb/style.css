@@ -222,10 +222,6 @@ div.quote header button.vote.voted::after {
 	border-color: var(--primary);
 }
 
-div.quote header button.vote.disabled, div.quote header button.vote.voted {
-	cursor: default;
-}
-
 div.quote header .votes {
 	font-size: 0.9em;
 	color: var(--light-text);

@@ -82,29 +82,33 @@ def bottom(request):
 	quote_list = quotes.order_by('score')
 	return get_quotes('Bottom Quotes', quote_list, request)
 
-def vote_up(request, quote_id):
-	if request.method == 'POST' and not request.session.get('voted', {}).get(str(quote_id), False) and (request.session.get('verified', False) or request.body and verify_recaptcha(request.body)):
+def vote(request, quote_id, direction):
+	if request.method == 'POST' and (request.session.get('verified', False) or request.body and verify_recaptcha(request.body)):
 		request.session['verified'] = True
 		if request.session.get('voted', False) == False: request.session['voted'] = {}
-		request.session['voted'][quote_id] = 'up'
-		request.session.save()
+		if request.session.get('votes', False) == False: request.session['votes'] = {}
 		quote = get_object_or_404(Quote, pk=quote_id)
 		if not quote.approved: return HttpResponse(status=403)
-		Vote(quote=quote, ip=request.META.get('REMOTE_ADDR'), useragent=request.META.get('HTTP_USER_AGENT'), value=1).save()
+		if request.session['votes'].get(str(quote_id)) != None:
+			Vote(id=request.session['votes'][str(quote_id)]).delete()
+			del request.session['votes'][str(quote_id)]
+			if request.session['voted'][str(quote_id)] == direction:
+				del request.session['voted'][str(quote_id)]
+				return HttpResponse('')
+			del request.session['voted'][str(quote_id)]
+		vote = Vote(quote=quote, ip=request.META.get('REMOTE_ADDR'), useragent=request.META.get('HTTP_USER_AGENT'), value=1 if direction == 'up' else -1)
+		vote.save()
+		request.session['voted'][quote_id] = direction 
+		request.session['votes'][quote_id] = vote.id
+		request.session.save()
 		return HttpResponse('')
 	else: return HttpResponse(status=403)
 
+def vote_up(request, quote_id):
+	return vote(request, quote_id, 'up')
+
 def vote_down(request, quote_id):
-	if request.method == 'POST' and not request.session.get('voted', {}).get(str(quote_id), False) and (request.session.get('verified', False) or request.body and verify_recaptcha(request.body)):
-		request.session['verified'] = True
-		if request.session.get('voted', False) == False: request.session['voted'] = {}
-		request.session['voted'][quote_id] = 'down'
-		request.session.save()
-		quote = get_object_or_404(Quote, pk=quote_id)
-		if not quote.approved: return HttpResponse(status=403)
-		Vote(quote=quote, ip=request.META.get('REMOTE_ADDR'), useragent=request.META.get('HTTP_USER_AGENT'), value=-1).save()
-		return HttpResponse('')
-	else: return HttpResponse(status=403)
+	return vote(request, quote_id, 'down')
 
 def report(request, quote_id):
 	if request.method == 'POST' and not request.session.get('reported', {}).get(str(quote_id), False) and (request.session.get('verified', False) or request.body and verify_recaptcha(request.body)):
