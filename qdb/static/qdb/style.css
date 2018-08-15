@@ -431,3 +431,15 @@ form button:focus {
 	color: black;
 	cursor: default;
 }
+
+div.grecaptcha-badge {
+	position: relative !important;
+	top: -4.5em;
+	left: 2em;
+	transform-origin: left center;
+	transform: scale(0.7, 0.7);
+}
+
+.rc-anchor-invisible-text {
+	background: #bbb !important;
+}
