@@ -6,6 +6,9 @@ from django.db.models import Sum, Count
 from django.db.models.functions import Coalesce
 from django.contrib import messages
 
+import os
+import json
+
 from dal import autocomplete
 from taggit.models import Tag
 
@@ -13,7 +16,14 @@ from urlobject import URLObject
 
 from .models import Quote, News, Vote
 
+import requests
+
 quotes = Quote.objects.annotate(score=Coalesce(Sum('vote__value'), 0), votes=Count('vote')).filter(approved=True)
+
+def verify_recaptcha(response):
+	response = requests.post('https://www.google.com/recaptcha/api/siteverify', data={ "secret": os.environ['RECAPTCHA_SECRET'], "response": ''.join(chr(x) for x in response) }).text
+	print(response)
+	return json.loads(response)['success'] and json.loads(response)['score'] > 0.5
 
 def index(request):
 	template = loader.get_template('qdb/index.html')
@@ -73,7 +83,7 @@ def bottom(request):
 	return get_quotes('Bottom Quotes', quote_list, request)
 
 def vote_up(request, quote_id):
-	if request.method == 'POST' and not request.session.get('voted', {}).get(str(quote_id), False):
+	if request.method == 'POST' and not request.session.get('voted', {}).get(str(quote_id), False) and request.body and verify_recaptcha(request.body):
 		if request.session.get('voted', False) == False: request.session['voted'] = {}
 		request.session['voted'][quote_id] = 'up'
 		request.session.save()
@@ -84,7 +94,7 @@ def vote_up(request, quote_id):
 	else: return HttpResponse(status=403)
 
 def vote_down(request, quote_id):
-	if request.method == 'POST' and not request.session.get('voted', {}).get(str(quote_id), False):
+	if request.method == 'POST' and not request.session.get('voted', {}).get(str(quote_id), False) and request.body and verify_recaptcha(request.body):
 		if request.session.get('voted', False) == False: request.session['voted'] = {}
 		request.session['voted'][quote_id] = 'down'
 		request.session.save()
@@ -95,7 +105,7 @@ def vote_down(request, quote_id):
 	else: return HttpResponse(status=403)
 
 def report(request, quote_id):
-	if request.method == 'POST' and not request.session.get('reported', {}).get(str(quote_id), False):
+	if request.method == 'POST' and not request.session.get('reported', {}).get(str(quote_id), False) and request.body and verify_recaptcha(request.body):
 		if request.session.get('reported', False) == False: request.session['reported'] = {}
 		request.session['reported'][quote_id] = True
 		request.session.save()

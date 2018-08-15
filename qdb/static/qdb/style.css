@@ -431,3 +431,13 @@ form button:focus {
 	color: black;
 	cursor: default;
 }
+
+section.main + div:last-child {
+	position: fixed !important;
+}
+
+section.main + div:last-child div:last-child {
+	position: fixed !important;
+	top: 50% !important;
+	transform: translateY(-50%);
+}
