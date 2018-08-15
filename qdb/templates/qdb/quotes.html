@@ -64,28 +64,36 @@
 	{% csrf_token %}
 	<script>
 		function vote(id, direction, event) {
-			if (event.target.classList.contains('voted') || event.target.classList.contains('disabled')) return
-			var xhr = new XMLHttpRequest();
-			xhr.open('POST', '/' + id + '/' + direction, true);
-			xhr.setRequestHeader('X-CSRFToken', document.cookie.split('csrftoken=')[1].split(';')[0])
-			xhr.onload = function () {
-				window['score_'+id].innerText = parseInt(window['score_'+id].innerText) + (direction === 'up' ? 1 : -1)
-				window[direction+'_'+id].classList.add('voted')
-				window[(direction === 'up' ? 'down' : 'up') + '_' + id].classList.add('disabled')
-				window['votes_'+id].innerText = parseInt(window['votes_'+id].innerText) + 1
-			}
-			xhr.send(null)
+			grecaptcha.ready(function() {
+				grecaptcha.execute('6Lf0AWoUAAAAAOWJbg0PP12Qbl7yPrwDd-Guv8mB', {action: 'vote'})
+				.then(function(response) {
+					if (event.target.classList.contains('voted') || event.target.classList.contains('disabled')) return
+					var xhr = new XMLHttpRequest();
+					xhr.open('POST', '/' + id + '/' + direction, true);
+					xhr.setRequestHeader('X-CSRFToken', document.cookie.split('csrftoken=')[1].split(';')[0])
+					xhr.onload = function () {
+						window['score_'+id].innerText = parseInt(window['score_'+id].innerText) + (direction === 'up' ? 1 : -1)
+						window[direction+'_'+id].classList.add('voted')
+						window[(direction === 'up' ? 'down' : 'up') + '_' + id].classList.add('disabled')
+						window['votes_'+id].innerText = parseInt(window['votes_'+id].innerText) + 1
+					}
+					xhr.send(response)
+				})
+			})
 		}
 
 		function report(id, event) {
-			var xhr = new XMLHttpRequest();
-			xhr.open('POST', '/' + id + '/report', true);
-			xhr.setRequestHeader('X-CSRFToken', document.cookie.split('csrftoken=')[1].split(';')[0])
-			xhr.onload = function () {
-				event.target.innerText = '\u2691 Reported'
-				event.target.classList.add('reported')
-			}
-			xhr.send(null)
+			grecaptcha.execute('6Lf0AWoUAAAAAOWJbg0PP12Qbl7yPrwDd-Guv8mB', {action: 'report'})
+			.then(function(response) {
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', '/' + id + '/report', true);
+				xhr.setRequestHeader('X-CSRFToken', document.cookie.split('csrftoken=')[1].split(';')[0])
+				xhr.onload = function () {
+					event.target.innerText = '\u2691 Reported'
+					event.target.classList.add('reported')
+				}
+				xhr.send(response)
+			})
 		}
 	</script>
 {% endblock %}
