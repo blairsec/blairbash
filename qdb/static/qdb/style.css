@@ -154,7 +154,7 @@ div.quote:last-child {
 
 div.quote header {
 	background-color: var(--secondary);
-	padding: 1em;
+	padding: .5em .75em;
 	border-radius: 0.5em 0.5em 0 0;
 }
 
@@ -245,15 +245,12 @@ div.quote header .timestamp {
 div.quote blockquote {
 	font-family: Consolas, Monaco, Courier New, monospace;
 	font-size: .8em;
-	margin-left: 1em;
-	margin-bottom: 1em;
-	padding: 1em;
+	margin: 1em;
+	padding: .75em 1em;
 	border-left: .15em solid var(--primary);
 	background-color: #f0f0f0;
-	margin-right: 1em;
-	margin-left: calc(1em + 2px);
 	white-space: pre-wrap;
-	line-height: 1.5em;
+	line-height: 1.75em;
 }
 
 div.quote footer {
