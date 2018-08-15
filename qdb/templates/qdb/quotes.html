@@ -105,8 +105,10 @@
 			xhr.send(response)
 		}
 		function report(id, event) {
-			!verified ? grecaptcha.ready(function() { grecaptcha.execute('6Lf0AWoUAAAAAOWJbg0PP12Qbl7yPrwDd-Guv8mB', {action: 'report'})
-			.then(reportFunc.bind({id, event}))}) : voteFunc.bind({id, event})
+			!verified ? grecaptcha.ready(function() {
+				grecaptcha.execute('6Lf0AWoUAAAAAOWJbg0PP12Qbl7yPrwDd-Guv8mB', {action: 'report'})
+				.then(reportFunc.bind({id, event}))
+			}) : reportFunc.bind({id, event})()
 		}
 	</script>
 {% endblock %}
