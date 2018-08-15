@@ -15,6 +15,7 @@ from taggit.models import Tag
 from urlobject import URLObject
 
 from .models import Quote, News, Vote
+from .charts import VoteDistributionChart
 
 import requests
 
@@ -132,19 +133,6 @@ def quote(request, quote_id):
 	if len(quote_list) == 0: return redirect('/')
 	return get_quotes('Quote #{}'.format(quote_id), quote_list, request, no_pages=True)
 
-def tag_cloud(request):
-	tags = Tag.objects.filter(quote__approved=True).annotate(count=Count('quote')).order_by('name').distinct()
-	max_tag = max(map(lambda tag: tag.count, tags))
-	max_size = 35
-	min_size = 15
-	for tag in tags:
-		tag.size = (tag.count/max_tag)**0.5 * (max_size-min_size) + min_size
-	template = loader.get_template('qdb/tags.html')
-	context = {
-		'tags': tags,
-	}
-	return HttpResponse(template.render(context, request))
-
 def search(request):
 	template = loader.get_template('qdb/search.html')
 	query = request.GET.get('q', '')
@@ -153,6 +141,26 @@ def search(request):
 	if tag: quote_list = quote_list.filter(tags__name__in=[tag])
 	quote_list = quote_list.order_by('-timestamp')
 	return get_quotes('Search Quotes', quote_list, request, query=query, tag=tag)
+
+def tags(request):
+	tag_list = Tag.objects.filter(quote__approved=True).annotate(count=Count('quote')).order_by('name').distinct()
+	max_tag = max(map(lambda tag: tag.count, tag_list))
+	max_size = 35
+	min_size = 15
+	for tag in tag_list:
+		tag.size = (tag.count/max_tag)**0.5 * (max_size-min_size) + min_size
+	template = loader.get_template('qdb/tags.html')
+	context = {
+		'tags': tag_list,
+	}
+	return HttpResponse(template.render(context, request))
+
+def stats(request):
+	template = loader.get_template('qdb/stats.html')
+	context = {
+		'vote_distribution': VoteDistributionChart().generate()
+	}
+	return HttpResponse(template.render(context, request)) 
 
 def submit(request):
 	if request.method == 'POST':

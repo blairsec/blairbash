@@ -9,6 +9,7 @@ django-taggit = "*"
 django-autocomplete-light = "*"
 urlobject = "*"
 requests = "*"
+pygal="*"
 
 [dev-packages]
 pytz = "*"
