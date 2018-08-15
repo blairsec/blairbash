@@ -15,6 +15,7 @@
 			<nav class="main">
 				<ul>
 					<li{% if request.path == '/' %} class="active" {% endif %}><a href="/">Home</a></li><!--
+					--><li{% if request.path == '/about' %} class="active" {% endif %}><a href="/about">About</a></li><!--
 					--><li{% if request.path == '/latest' %} class="active" {% endif %}><a href="/latest">Latest</a></li><!--
 					--><li{% if request.path == '/random' %} class="active" {% endif %}><a href="/random">Random</a></li><!--
 					--><li{% if request.path == '/top' %} class="active" {% endif %}><a href="/top">Top</a></li><!--

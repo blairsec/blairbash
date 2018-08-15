@@ -39,6 +39,10 @@ def news(request):
 	}
 	return HttpResponse(template.render(context, request))
 
+def about(request):
+	template = loader.get_template('qdb/about.html')
+	return HttpResponse(template.render({}, request))
+
 def get_quotes(title, quote_list, request, per_page=10, no_pages=False, query=False, tag=False):
 	start = 0
 	try: start = int(request.GET.get('start', ''))
