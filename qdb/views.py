@@ -122,7 +122,7 @@ def report(request, quote_id):
 def quote(request, quote_id):
 	quote_list = quotes.filter(id=quote_id)
 	if len(quote_list) == 0: return redirect('/')
-	return get_quotes('View Quote', quote_list, request, no_pages=True)
+	return get_quotes('Quote #{}'.format(quote_id), quote_list, request, no_pages=True)
 
 def tag_cloud(request):
 	tags = Tag.objects.filter(quote__approved=True).annotate(count=Count('quote')).order_by('name').distinct()
