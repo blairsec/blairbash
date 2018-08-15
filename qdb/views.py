@@ -58,6 +58,7 @@ def get_quotes(title, quote_list, request, per_page=10, no_pages=False, query=Fa
 		'previous_page': False if start - per_page < 0 else url.with_query(url.query.set_param('start', str(start-per_page if start-per_page > 0 else 0))),
 		'next_page': False if start + per_page >= len(quote_list) else url.with_query(url.query.set_param('start', str(start+per_page))),
 		'no_pages': no_pages,
+		'verified': request.session.get('verified', False)
 	}
 	if query != False: context['query'] = query
 	if tag != False: context['tag'] = tag
@@ -83,7 +84,8 @@ def bottom(request):
 	return get_quotes('Bottom Quotes', quote_list, request)
 
 def vote_up(request, quote_id):
-	if request.method == 'POST' and not request.session.get('voted', {}).get(str(quote_id), False) and request.body and verify_recaptcha(request.body):
+	if request.method == 'POST' and not request.session.get('voted', {}).get(str(quote_id), False) and (request.session.get('verified', False) or request.body and verify_recaptcha(request.body)):
+		request.session['verified'] = True
 		if request.session.get('voted', False) == False: request.session['voted'] = {}
 		request.session['voted'][quote_id] = 'up'
 		request.session.save()
@@ -94,7 +96,8 @@ def vote_up(request, quote_id):
 	else: return HttpResponse(status=403)
 
 def vote_down(request, quote_id):
-	if request.method == 'POST' and not request.session.get('voted', {}).get(str(quote_id), False) and request.body and verify_recaptcha(request.body):
+	if request.method == 'POST' and not request.session.get('voted', {}).get(str(quote_id), False) and (request.session.get('verified', False) or request.body and verify_recaptcha(request.body)):
+		request.session['verified'] = True
 		if request.session.get('voted', False) == False: request.session['voted'] = {}
 		request.session['voted'][quote_id] = 'down'
 		request.session.save()
@@ -105,7 +108,8 @@ def vote_down(request, quote_id):
 	else: return HttpResponse(status=403)
 
 def report(request, quote_id):
-	if request.method == 'POST' and not request.session.get('reported', {}).get(str(quote_id), False) and request.body and verify_recaptcha(request.body):
+	if request.method == 'POST' and not request.session.get('reported', {}).get(str(quote_id), False) and (request.session.get('verified', False) or request.body and verify_recaptcha(request.body)):
+		request.session['verified'] = True
 		if request.session.get('reported', False) == False: request.session['reported'] = {}
 		request.session['reported'][quote_id] = True
 		request.session.save()
