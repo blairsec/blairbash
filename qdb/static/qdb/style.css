@@ -110,6 +110,10 @@ nav.main ul li.active:hover, nav.main ul li.active {
 	cursor: pointer;
 }
 
+nav.main ul li:first-child {
+	border-radius: 0.3em 0 0 0;
+}
+
 nav.main ul li:hover {
 	background-color: #f5f5f5;
 	cursor: pointer;
