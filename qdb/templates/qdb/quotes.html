@@ -1,7 +1,7 @@
 {% extends 'qdb/base.html' %}
 
 {% block css %}
-{% if not verified %}<script src='https://www.google.com/recaptcha/api.js?render=6Lf0AWoUAAAAAOWJbg0PP12Qbl7yPrwDd-Guv8mB'></script>{% endif %}
+{% if not verified %}<script src='https://www.google.com/recaptcha/api.js'></script>{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -65,12 +65,18 @@
 		{% endif %}
 	{% endif %}
 	{% csrf_token %}
+	<div class="g-recaptcha"
+	          data-sitekey="6LeE_mkUAAAAAN1Kpi6Hq1nMxlAwCJYxfO43F8bo"
+	          data-callback="performAction"
+	          data-size="invisible">
+	    </div>
 	<script>
+		var event;
+		var direction;
+		var id;
+		var action;
 		var verified = {% if verified %}true{% else %}false{% endif %}
 		function voteFunc(response) {
-			var event = this.event
-			var direction = this.direction
-			var id = this.id
 			if (event.target.classList.contains('voted') || event.target.classList.contains('disabled')) return
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', '/' + id + '/' + direction, true);
@@ -84,17 +90,17 @@
 			}
 			xhr.send(response ? response : null)
 		}
-		function vote(id, direction, event) {
+		function vote(vid, vdirection, vevent) {
+			id = vid
+			event = vevent
+			direction = vdirection
+			action = 'vote'
 			!verified ? grecaptcha.ready(function() {
-				grecaptcha.execute('6Lf0AWoUAAAAAOWJbg0PP12Qbl7yPrwDd-Guv8mB', {action: 'vote'})
-				.then(voteFunc.bind({id: id, direction: direction, event: event}))
-			}) : voteFunc.bind({id: id, direction: direction, event: event})()
+				grecaptcha.execute()
+			}) : voteFunc()
 		}
-
 		function reportFunc(response) {
-			var id = this.id
-			var event = this.event
-			var xhr = new XMLHttpRequest();
+			var xhr = new XMLHttpRequest()
 			xhr.open('POST', '/' + id + '/report', true);
 			xhr.setRequestHeader('X-CSRFToken', document.cookie.split('csrftoken=')[1].split(';')[0])
 			xhr.onload = function () {
@@ -104,11 +110,18 @@
 			}
 			xhr.send(response)
 		}
-		function report(id, event) {
+		function report(rid, revent) {
+			id = rid
+			event = revent
+			action = 'report'
 			!verified ? grecaptcha.ready(function() {
-				grecaptcha.execute('6Lf0AWoUAAAAAOWJbg0PP12Qbl7yPrwDd-Guv8mB', {action: 'report'})
-				.then(reportFunc.bind({id, event}))
-			}) : reportFunc.bind({id, event})()
+				grecaptcha.execute()
+			}) : reportFunc()
+		}
+		function performAction (response) {
+			console.log('verified')
+			if (action == 'vote') voteFunc(response)
+			else if (action == 'report') reportFunc(response)
 		}
 	</script>
 {% endblock %}

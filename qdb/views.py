@@ -22,8 +22,7 @@ quotes = Quote.objects.annotate(score=Coalesce(Sum('vote__value'), 0), votes=Cou
 
 def verify_recaptcha(response):
 	response = requests.post('https://www.google.com/recaptcha/api/siteverify', data={ "secret": os.environ['RECAPTCHA_SECRET'], "response": ''.join(chr(x) for x in response) }).text
-	print(response)
-	return json.loads(response)['success'] and json.loads(response)['score'] > 0.5
+	return json.loads(response)['success']
 
 def index(request):
 	template = loader.get_template('qdb/index.html')

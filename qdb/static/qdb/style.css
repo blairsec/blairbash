@@ -431,22 +431,29 @@ form button:focus {
 	cursor: default;
 }
 
-body section.main + div:last-child {
-	height: 0;
+body div:last-child div:last-child[style*="margin: 0px auto; top: 0px; left: 0px; right: 0px; position: absolute; border: 1px solid rgb(204, 204, 204); z-index: 2000000000; background-color: rgb(255, 255, 255); overflow: hidden; width: 400px; height: 580px;"] {
+	position: fixed !important;
+	top: 50% !important;
+	transform: translateY(-50%);
 }
 
 div.grecaptcha-badge {
 	position: relative !important;
-	top: -4.5em;
-	left: 2em;
+	top: -0.8em;
+	left: 0;
 	transform-origin: left center;
 	transform: scale(0.7, 0.7);
+}
+
+div.g-recaptcha {
+	height: 0;
 }
 
 @media only screen and (max-width: 600px) {
 	html {
 		background-color: var(--background);
 		margin: 0.5em;
+		margin-bottom: 4em;
 	}
 
 	.page_nav, .refresh_button {
@@ -478,5 +485,11 @@ div.grecaptcha-badge {
 	}
 	.welcome {
 		margin-bottom: 2em;
+	}
+
+	div.grecaptcha-badge {
+		top: 1.4em;
+		left: 50%;
+		transform: scale(0.7, 0.7) translateX(-50%);
 	}
 }
