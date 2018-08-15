@@ -431,7 +431,7 @@ form button:focus {
 	cursor: default;
 }
 
-body div:last-child div:last-child[style*="margin: 0px auto; top: 0px; left: 0px; right: 0px; position: absolute; border: 1px solid rgb(204, 204, 204); z-index: 2000000000; background-color: rgb(255, 255, 255); overflow: hidden; width: 400px; height: 580px;"] {
+body div:last-child div:last-child[style*="z-index: 2000000000;"] {
 	position: fixed !important;
 	top: 50% !important;
 	transform: translateY(-50%);
@@ -453,7 +453,10 @@ div.g-recaptcha {
 	html {
 		background-color: var(--background);
 		margin: 0.5em;
-		margin-bottom: 4em;
+	}
+
+	.spacer {
+		height: 3.5em;
 	}
 
 	.page_nav, .refresh_button {
