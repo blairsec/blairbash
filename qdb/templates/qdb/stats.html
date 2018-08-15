@@ -1,0 +1,8 @@
+{% extends 'qdb/base.html' %}
+
+{% block content %}
+	<div class="fullwidth">
+		<h1>{% block title %}Statistics{% endblock %}</h1>
+		{{ vote_distribution|safe }}
+	</div>
+{% endblock %}
