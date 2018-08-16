@@ -445,7 +445,63 @@ div.g-recaptcha {
 	height: 0;
 }
 
+.chart {
+	width: 45%;
+	display: block;
+	background-color: var(--secondary);
+	border-radius: 1.5em;
+	padding: 0.5em 1em;
+	margin: 1em;
+}
+
+.charts-container {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+@media only screen and (max-width: 1470px) {
+	.chart {
+		width: 40%;
+	}	
+}
+
+@media only screen and (max-width: 830px) {
+	.chart {
+		width: 100%;
+	}
+}
+
 @media only screen and (max-width: 600px) {
+	.chart {
+		width: 100%;
+		margin: 0.5em;
+	}
+
+	.chart svg {
+		padding-bottom: 6vw;
+		padding-top: 0.5em;
+		padding-left: 0.2em;
+	}
+
+	.chart .title {
+		font-size: 3em !important;
+	}
+
+	.chart .legend text {
+		font-size: 2em !important;
+		margin-top: 1em;
+	}
+
+	.chart .legend text[x="17.0"] {
+		position: relative;
+		top: 1em;
+	}
+
+	.chart .axis text {
+		font-size: 2em !important;
+	}
+
 	html {
 		background-color: var(--background);
 		margin: 0.5em;

@@ -6,6 +6,22 @@ from .models import Quote, Vote
 
 import pygal
 
+from pygal.style import Style
+style = Style(
+	background='transparent',
+	plot_background='transparent',
+	foreground='#3d3d3d',
+	foreground_strong='#303030',
+	foreground_subtle='#939393',
+	opacity='.8',
+	opacity_hover='.9',
+	colors=('#fa5555', '#888'),
+	label_font_size=15,
+	major_label_font_size=15,
+	title_font_size=20,
+	legend_font_size=15
+)
+
 MONTHS = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
 
 quotes = Quote.objects.annotate(score=Coalesce(Sum('vote__value'), 0), votes=Count('vote')).filter(approved=True)
@@ -22,6 +38,7 @@ class QuotesOverTime():
 			show_legend=False,
 			show_dots=False,
 			fill=True,
+			style=style
 		)
 
 	def pull(self):
@@ -50,6 +67,7 @@ class QuotesByHour():
 			x_labels = list(map(str, range(24))),
 			margin=20,
 			show_legend=False,
+			style=style
 		)
 
 	def pull(self):
@@ -71,6 +89,7 @@ class QuotesByMonth():
 			x_labels = MONTHS,
 			margin=20,
 			show_legend=False,
+			style=style
 		)
 
 	def pull(self):
@@ -91,6 +110,7 @@ class QuotesByRating():
 			title='Quotes by Rating',
 			margin=20,
 			show_legend=False,
+			style=style
 		)
 
 	def pull(self):
@@ -115,6 +135,7 @@ class VoteDistribution():
 			title='Vote Distribution',
 			margin=20,
 			inner_radius=.7,
+			style=style
 		)
 
 	def pull(self):
