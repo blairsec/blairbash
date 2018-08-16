@@ -16,6 +16,7 @@ urlpatterns = [
 	path('stats', views.stats, name='stats'),
 	path('submit', views.submit, name='submit'),
 	path('news', views.news, name='news'),
+	path('about', views.about, name='about'),
 	path('tags/autocomplete', views.TagAutocomplete.as_view(model=Quote), name='quote_tags_autocomplete'),
 	path('<int:quote_id>', views.quote, name='quote'),
 	path('<int:quote_id>/up', views.vote_up),
