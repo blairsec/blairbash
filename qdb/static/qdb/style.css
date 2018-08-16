@@ -446,6 +446,7 @@ div.g-recaptcha {
 }
 
 .chart {
+	max-width: 50em;
 	width: 45%;
 	display: block;
 	background-color: var(--secondary);
