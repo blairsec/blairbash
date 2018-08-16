@@ -7,6 +7,7 @@ from .models import Quote, Vote
 import pygal
 
 from pygal.style import Style
+from math import log1p
 style = Style(
 	background='transparent',
 	plot_background='transparent',
@@ -107,7 +108,7 @@ class QuotesByRating():
 
 	def __init__(self):
 		self.chart = pygal.Histogram(
-			title='Quotes by Rating',
+			title='ln(# of Quotes+1) by Rating',
 			margin=20,
 			show_legend=False,
 			style=style
@@ -124,7 +125,7 @@ class QuotesByRating():
 		data = self.pull()
 		bars = []
 		for key, value in data.items():
-			bars.append((value, key, key+1))
+			bars.append((log1p(value), key, key+1))
 		self.chart.add('quotes', bars)
 		return self.chart.render(is_unicode=True)
 
