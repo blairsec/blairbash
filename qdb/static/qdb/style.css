@@ -446,11 +446,11 @@ div.g-recaptcha {
 }
 
 .chart {
-	max-width: 50em;
+	max-width: 40em;
 	width: 45%;
 	display: block;
 	background-color: var(--secondary);
-	border-radius: 1.5em;
+	border-radius: .5em;
 	padding: 0.5em 1em;
 	margin: 1em;
 }
@@ -463,19 +463,26 @@ div.g-recaptcha {
 
 @media only screen and (max-width: 1470px) {
 	.chart {
-		width: 40%;
+		width: 100%;
 	}	
 }
 
 @media only screen and (max-width: 830px) {
-	.chart {
-		width: 100%;
+	.chart .title {
+		font-size: 2em !important;
+	}
+
+	.chart .legend text {
+		font-size: 1.5em !important;
+	}
+
+	.chart .axis text {
+		font-size: 1em !important;
 	}
 }
 
 @media only screen and (max-width: 600px) {
 	.chart {
-		width: 100%;
 		margin: 0.5em;
 	}
 
@@ -486,25 +493,18 @@ div.g-recaptcha {
 	}
 
 	.chart .title {
-		font-size: 3em !important;
+		font-size: 2em !important;
 	}
 
 	.chart .legend text {
-		font-size: 2em !important;
-		margin-top: 1em;
-	}
-
-	.chart .legend text[x="17.0"] {
-		position: relative;
-		top: 1em;
+		font-size: 1.5em !important;
 	}
 
 	.chart .axis text {
-		font-size: 2em !important;
+		font-size: 1em !important;
 	}
 
 	html {
-		background-color: var(--background);
 		margin: 0.5em;
 	}
 
