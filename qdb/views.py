@@ -15,7 +15,7 @@ from taggit.models import Tag
 from urlobject import URLObject
 
 from .models import Quote, News, Vote
-from .charts import VoteDistributionChart
+from .charts import QuotesOverTime, QuotesByHour, QuotesByMonth, QuotesByRating, VoteDistribution
 
 import requests
 
@@ -154,7 +154,11 @@ def tags(request):
 def stats(request):
 	template = loader.get_template('qdb/stats.html')
 	context = {
-		'vote_distribution': VoteDistributionChart().generate()
+		'quotes_over_time': QuotesOverTime().generate(),
+		'quotes_by_hour': QuotesByHour().generate(),
+		'quotes_by_month': QuotesByMonth().generate(),
+		'quotes_by_rating': QuotesByRating().generate(), 
+		'vote_distribution': VoteDistribution().generate(),
 	}
 	return HttpResponse(template.render(context, request)) 
 
