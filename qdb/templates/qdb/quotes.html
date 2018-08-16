@@ -56,13 +56,13 @@
 	{% if not no_pages %}
 		{% if previous_page or next_page or not verified %}
 		<div class="page_nav"{% if not previous_page and not next_page %} style="visibility: hidden"{% endif %}>
-			<a {% if previous_page %}href="{{ previous_page }}"{% else %}class="disabled"{% endif %}>&larr;</a><!--
-			--><a {% if next_page %}href="{{ next_page }}"{% else %}class="disabled"{% endif %}>&rarr;</a>
+			<a {% if previous_page %}href="{{ previous_page }}"{% else %}class="disabled"{% endif %}> <i class="fas fa-arrow-left"></i></a><!--
+			--><a {% if next_page %}href="{{ next_page }}"{% else %}class="disabled"{% endif %}><i class="fas fa-arrow-right"></i></a>
 		</div>{% endif %}
 	{% else %}
 		{% if quote_list and quote_list|length > 1 or not verified %}
 		<div class="refresh_button"{% if not quote_list or not quote_list|length > 1 %} style="visibility: hidden"{% endif %}>
-			<a onclick="location.reload()">&#x21bb;</a>
+			<a onclick="location.reload()"> <i class="fas fa-sync-alt"></i></a>
 		</div>
 		{% endif %}
 	{% endif %}
