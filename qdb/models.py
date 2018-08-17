@@ -19,6 +19,11 @@ class Vote(models.Model):
 	timestamp = models.DateTimeField(auto_now_add=True)
 	quote = models.ForeignKey(Quote, on_delete=models.CASCADE)
 
+	class Meta:
+		indexes = [
+			models.Index(fields=['value', 'quote'])
+		]
+
 	def __str__(self):
 		return ('+' if self.value >= 0 else '') + str(self.value) + ' #' + str(self.quote.id)
 
