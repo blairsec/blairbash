@@ -548,4 +548,9 @@ div.g-recaptcha {
 		left: 50%;
 		transform: scale(0.7, 0.7) translateX(-50%);
 	}
+
+	.select2-dropdown {
+		margin-left: 0.5em;
+		margin-top: 0.5em;
+	}
 }
