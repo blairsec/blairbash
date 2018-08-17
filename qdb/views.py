@@ -25,8 +25,9 @@ from django.dispatch import receiver
 import math, sqlite3
 @receiver(connection_created)
 def extend_sqlite(connection=None, **kwargs):
-	sqlite3.enable_callback_tracebacks(True)
-	connection.connection.create_function("sqrt", 1, math.sqrt)
+	if connection.vendor == 'sqlite':
+		sqlite3.enable_callback_tracebacks(True)
+		connection.connection.create_function("sqrt", 1, math.sqrt)
 
 quotes = Quote.objects.annotate(score=Coalesce(Sum('vote__value'), 0), votes=Count('vote')).filter(approved=True)
 
@@ -93,7 +94,7 @@ def top(request):
 		SELECT *, CASE when up+down > 0 then ((up + 1.9208) / (up + down) - 1.96 * SQRT((up * down) / (up + down) + 0.9604) / (up + down)) / (1 + 3.8416 / (up + down)) end as bound,
 		up+down as votes, up-down as score FROM (
 		SELECT *, (SELECT COUNT(*) FROM qdb_vote WHERE value=1 AND quote_id=qdb_quote.id) as up,
-		(SELECT COUNT(*) FROM qdb_vote WHERE value=-1 AND quote_id=qdb_quote.id) as down from qdb_quote) where approved=true ORDER BY bound DESC
+		(SELECT COUNT(*) FROM qdb_vote WHERE value=-1 AND quote_id=qdb_quote.id) as down from qdb_quote) where approved=1 ORDER BY bound DESC
 	""")
 	return get_quotes('Top Quotes', quote_list, request)
 
@@ -102,7 +103,7 @@ def bottom(request):
 		SELECT *, CASE when up+down > 0 then ((down + 1.9208) / (down + up) - 1.96 * SQRT((down * up) / (down + up) + 0.9604) / (down + up)) / (1 + 3.8416 / (down + up)) end as bound,
 		up+down as votes, up-down as score FROM (
 		SELECT *, (SELECT COUNT(*) FROM qdb_vote WHERE value=1 AND quote_id=qdb_quote.id) as up,
-		(SELECT COUNT(*) FROM qdb_vote WHERE value=-1 AND quote_id=qdb_quote.id) as down from qdb_quote) where approved=true ORDER BY bound DESC
+		(SELECT COUNT(*) FROM qdb_vote WHERE value=-1 AND quote_id=qdb_quote.id) as down from qdb_quote) where approved=1 ORDER BY bound DESC
 	""")
 	return get_quotes('Bottom Quotes', quote_list, request)
 
