@@ -24,7 +24,7 @@ class QuoteAdmin(admin.ModelAdmin):
 @admin.register(Vote)
 class VoteAdmin(admin.ModelAdmin):
 	readonly_fields = ('timestamp',)
-	list_display = ('get_quote_id', 'value', 'ip', 'timestamp')
+	list_display = ('get_quote_id', 'value', 'ip', 'useragent', 'timestamp')
 	search_fields = ['=quote__id', 'ip']
 	list_filter = (
 		('value', admin.AllValuesFieldListFilter),
