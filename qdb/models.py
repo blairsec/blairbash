@@ -2,6 +2,8 @@ from django.db import models
 from taggit.managers import TaggableManager
 
 class Quote(models.Model):
+	ip = models.GenericIPAddressField()
+	useragent = models.TextField()
 	content = models.TextField(blank=True)
 	tags = TaggableManager()
 	timestamp = models.DateTimeField(auto_now_add=True)

@@ -21,7 +21,7 @@ class QuoteAdmin(admin.ModelAdmin):
 		('approved', admin.BooleanFieldListFilter),
 		('reported', admin.BooleanFieldListFilter)
 	)
-	list_display = ('id', 'approved', 'reported', 'timestamp')
+	list_display = ('id', 'approved', 'reported', 'ip', 'useragent', 'timestamp')
 	search_fields = ['=id', 'content']
 	actions = [approve, clear_reports]
 

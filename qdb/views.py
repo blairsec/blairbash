@@ -188,7 +188,7 @@ def stats(request):
 
 def submit(request):
 	if request.method == 'POST':
-		quote = Quote(content=request.POST['content'], notes=request.POST['notes'])
+		quote = Quote(content=request.POST['content'], notes=request.POST['notes'], ip=request.META.get('REMOTE_ADDR' if not os.environ.get('PROXY', False) else 'HTTP_X_REAL_IP'), useragent=request.META.get('HTTP_USER_AGENT'))
 		quote.save()
 		quote.tags.add(*request.POST.getlist('tags[]'))
 		messages.success(request, 'Your quote has been submitted for approval. An administrator will review it shortly.')
