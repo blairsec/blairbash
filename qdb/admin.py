@@ -1,5 +1,9 @@
 from django.contrib import admin
 
+from django.contrib.admin.models import LogEntry
+
+admin.site.register(LogEntry)
+
 from .models import Quote, Vote, News
 
 def approve(modeladmin, request, queryset):
