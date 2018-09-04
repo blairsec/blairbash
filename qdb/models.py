@@ -3,9 +3,9 @@ from taggit.managers import TaggableManager
 
 class Quote(models.Model):
 	ip = models.GenericIPAddressField()
-	useragent = models.TextField()
+	useragent = models.TextField(blank=True)
 	content = models.TextField(blank=True)
-	tags = TaggableManager()
+	tags = TaggableManager(blank=True)
 	timestamp = models.DateTimeField(auto_now_add=True)
 	approved = models.BooleanField(default=False)
 	reported = models.BooleanField(default=False)
@@ -16,7 +16,7 @@ class Quote(models.Model):
 
 class Vote(models.Model):
 	ip = models.GenericIPAddressField()
-	useragent = models.TextField()
+	useragent = models.TextField(blank=True)
 	value = models.IntegerField()
 	timestamp = models.DateTimeField(auto_now_add=True)
 	quote = models.ForeignKey(Quote, on_delete=models.CASCADE)
