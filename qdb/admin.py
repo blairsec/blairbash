@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.db.models.functions import Coalesce
+from django.db.models import Sum, Count, F, Q
 
 from django.contrib.admin.models import LogEntry
 
@@ -16,12 +18,22 @@ clear_reports.short_description = 'Clear reports of selected quotes'
 
 @admin.register(Quote)
 class QuoteAdmin(admin.ModelAdmin):
-	readonly_fields = ('timestamp',)
+
+	def score(self, quote): return quote.score
+	score.admin_order_field = 'score'
+
+	def votes(self, quote): return quote.votes
+	votes.admin_order_field = 'votes'
+
+	def get_queryset(self, request):
+		return super(QuoteAdmin, self).get_queryset(request).annotate(score=Coalesce(Sum('vote__value'), 0), votes=Count('vote'))
+
+	readonly_fields = ('timestamp', 'score', 'votes')
 	list_filter = (
 		('approved', admin.BooleanFieldListFilter),
 		('reported', admin.BooleanFieldListFilter)
 	)
-	list_display = ('id', 'approved', 'reported', 'ip', 'useragent', 'timestamp')
+	list_display = ('id', 'approved', 'reported', 'ip', 'useragent', 'timestamp', 'score', 'votes')
 	search_fields = ['=id', 'content']
 	actions = [approve, clear_reports]
 
