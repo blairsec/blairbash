@@ -65,6 +65,20 @@ a:hover {
 	margin-bottom: 0;
 }
 
+.timeoption {
+	font-size: 0.9rem;
+	color: var(--light-text);
+	white-space: nowrap;
+}
+
+.timeoption select {
+	background-color: transparent;
+	border: none;
+	color: var(--light-text);
+	font-size: 0.9rem;
+	border-bottom: 1px var(--light-text) dashed;
+}
+
 html {
 	background-color: var(--background);
 	margin: 1.5em 3em;
@@ -517,6 +531,11 @@ div.g-recaptcha {
 		font-size: 1rem;
 		margin-top: 1.5em;
 		text-align: center;
+	}
+
+	.page_nav[style="visibility: hidden"], .refresh_button[style="visibility: hidden"] {
+		margin: 0;
+		height: 0;
 	}
 
 	section.main {

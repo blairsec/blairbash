@@ -90,20 +90,30 @@ def random(request):
 	return get_quotes('Random Quotes', quote_list, request, no_pages=True)
 
 def top(request):
+	time = ""
+	if request.GET.get('t') == "year": time = "1 year"
+	elif request.GET.get('t') == "month": time = "1 month"
+	elif request.GET.get('t') == "week": time = "7 days"
+	elif request.GET.get('t') == "day": time = "1 day"
 	quote_list = Quote.objects.raw("""
 		SELECT *, CASE when up+down > 0 then ((up + 1.9208) / (up + down) - 1.96 * SQRT((up * down) / (up + down) + 0.9604) / (up + down)) / (1 + 3.8416 / (up + down)) end as bound,
 		up+down as votes, up-down as score FROM (
 		SELECT *, (SELECT COUNT(*) FROM qdb_vote WHERE value=1 AND quote_id=qdb_quote.id) as up,
-		(SELECT COUNT(*) FROM qdb_vote WHERE value=-1 AND quote_id=qdb_quote.id) as down from qdb_quote) where approved=1 ORDER BY bound DESC
+		(SELECT COUNT(*) FROM qdb_vote WHERE value=-1 AND quote_id=qdb_quote.id) as down from qdb_quote) where approved=1 """ + ("AND timestamp >= Datetime(date('now', '-" + time + "')) " if time else "") + """ORDER BY bound DESC
 	""")
 	return get_quotes('Top Quotes', quote_list, request)
 
 def bottom(request):
+	time = ""
+	if request.GET.get('t') == "year": time = "1 year"
+	elif request.GET.get('t') == "month": time = "1 month"
+	elif request.GET.get('t') == "week": time = "7 days"
+	elif request.GET.get('t') == "day": time = "1 day"
 	quote_list = Quote.objects.raw("""
 		SELECT *, CASE when up+down > 0 then ((down + 1.9208) / (down + up) - 1.96 * SQRT((down * up) / (down + up) + 0.9604) / (down + up)) / (1 + 3.8416 / (down + up)) end as bound,
 		up+down as votes, up-down as score FROM (
 		SELECT *, (SELECT COUNT(*) FROM qdb_vote WHERE value=1 AND quote_id=qdb_quote.id) as up,
-		(SELECT COUNT(*) FROM qdb_vote WHERE value=-1 AND quote_id=qdb_quote.id) as down from qdb_quote) where approved=1 ORDER BY bound DESC
+		(SELECT COUNT(*) FROM qdb_vote WHERE value=-1 AND quote_id=qdb_quote.id) as down from qdb_quote) where approved=1 """ + ("AND timestamp >= Datetime(date('now', '-" + time + "')) " if time else "") + """ORDER BY bound DESC
 	""")
 	return get_quotes('Bottom Quotes', quote_list, request)
 

@@ -8,7 +8,14 @@
 
 {% block content %}
 	<h1>
-		{% block title %}{{ title }}{% endblock %}
+		{% block title %}{{ title }}{% endblock %}&ensp;
+		{%if request.path == "/top" or request.path == "/bottom" %}<span class="timeoption" onchange="updateTime()">From: <select class="timeselect">
+			<option value="">All Time</option>
+			<option value="year">Past Year</option>
+			<option value="month">Past Month</option>
+			<option value="week">Past Week</option>
+			<option value="day">Past Day</option>
+		</select></span>{% endif %}
 		{% if not no_pages %}
 			{% if previous_page or next_page or not verified %}
 			<div class="page_nav"{% if not previous_page and not next_page %} style="visibility: hidden"{% endif %}>
@@ -68,10 +75,10 @@
 	{% endif %}
 	{% csrf_token %}
 	<div class="g-recaptcha"
-	          data-sitekey="6LemfWwUAAAAAEPvTkLgc8qBfZJef82m4zRVWAfy"
-	          data-callback="performAction"
-	          data-size="invisible">
-	    </div>
+			  data-sitekey="6LemfWwUAAAAAEPvTkLgc8qBfZJef82m4zRVWAfy"
+			  data-callback="performAction"
+			  data-size="invisible">
+		</div>
 	<script>
 		var event;
 		var direction;
@@ -124,6 +131,52 @@
 			if (action == 'vote') voteFunc(response)
 			else if (action == 'report') reportFunc(response)
 		}
+		function updateQueryString(key, value, url) {
+			if (!url) url = window.location.href;
+			var re = new RegExp("([?&])" + key + "=.*?(&|#|$)(.*)", "gi"),
+				hash;
+
+			if (re.test(url)) {
+				if (typeof value !== 'undefined' && value !== null)
+					return url.replace(re, '$1' + key + "=" + value + '$2$3');
+				else {
+					hash = url.split('#');
+					url = hash[0].replace(re, '$1$3').replace(/(&|\?)$/, '');
+					if (typeof hash[1] !== 'undefined' && hash[1] !== null) 
+						url += '#' + hash[1];
+					return url;
+				}
+			}
+			else {
+				if (typeof value !== 'undefined' && value !== null) {
+					var separator = url.indexOf('?') !== -1 ? '&' : '?';
+					hash = url.split('#');
+					url = hash[0] + separator + key + '=' + value;
+					if (typeof hash[1] !== 'undefined' && hash[1] !== null) 
+						url += '#' + hash[1];
+					return url;
+				}
+				else
+					return url;
+			}
+		}
+		function getParameterByName(name, url) {
+		    if (!url) url = window.location.href;
+		    name = name.replace(/[\[\]]/g, '\\$&');
+		    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+		        results = regex.exec(url);
+		    if (!results) return null;
+		    if (!results[2]) return '';
+		    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+		}
+		function updateTime () {
+			window.location.href = updateQueryString('start', undefined, updateQueryString('t', document.getElementsByClassName('timeselect')[0].value ? document.getElementsByClassName('timeselect')[0].value : undefined))
+		}
+		function setTime () {
+			if (['month', 'day', 'year', 'week'].indexOf(getParameterByName('t')) === -1) document.getElementsByClassName('timeselect')[0].value = ''
+			else document.getElementsByClassName('timeselect')[0].value = getParameterByName('t')
+		}
+		setTime()
 	</script>
 {% endblock %}
 {% block js %}
