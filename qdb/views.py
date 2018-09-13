@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 from django.shortcuts import get_object_or_404, redirect
-from django.db.models import Sum, Count, F, Q
+from django.db.models import Sum, Count, F, Q, Case, When
 from django.db.models.functions import Coalesce
 from django.contrib import messages
 
@@ -21,6 +21,8 @@ import requests
 
 from django.db.backends.signals import connection_created
 from django.dispatch import receiver
+
+from haystack.query import SearchQuerySet
 
 import math, sqlite3
 @receiver(connection_created)
@@ -54,21 +56,25 @@ def about(request):
 	template = loader.get_template('qdb/about.html')
 	return HttpResponse(template.render({}, request))
 
-def get_quotes(title, quote_list, request, per_page=10, no_pages=False, query=False, tag=False):
+def get_quotes(title, quote_list, request, per_page=10, no_pages=False, query=False, tag=False, results=False):
 	start = 0
 	try: start = int(request.GET.get('start', ''))
 	except: pass
 	if start < 0: start = 0
+	found_quotes = quote_list[start:start+per_page]
 	if query == False: template = loader.get_template('qdb/quotes.html')
-	else: template = loader.get_template('qdb/search.html')
-	quotes = quote_list[start:start+per_page]
+	else:
+		template = loader.get_template('qdb/search.html')
+		ids = list(map(lambda q: q.id, found_quotes))
+		found_quotes = quotes.filter(id__in=ids)
+		found_quotes = [{q.id: q for q in found_quotes}[id] for id in ids]
 	voted = []
 	reported = []
-	for i in range(len(quotes)): voted.append(request.session.get('voted', {}).get(str(quotes[i].id), False)); reported.append(request.session.get('reported', {}).get(str(quotes[i].id), False))
+	for i in range(len(found_quotes)): voted.append(request.session.get('voted', {}).get(str(found_quotes[i].id), False)); reported.append(request.session.get('reported', {}).get(str(found_quotes[i].id), False))
 	url = URLObject(request.build_absolute_uri())
 	context = {
 		'title': title,
-		'quote_list': list(zip(quotes, voted, reported)),
+		'quote_list': list(zip(found_quotes, voted, reported)),
 		'previous_page': False if start - per_page < 0 else url.with_query(url.query.set_param('start', str(start-per_page if start-per_page > 0 else 0))),
 		'next_page': False if start + per_page >= len(quote_list) else url.with_query(url.query.set_param('start', str(start+per_page))),
 		'no_pages': no_pages,
@@ -76,6 +82,7 @@ def get_quotes(title, quote_list, request, per_page=10, no_pages=False, query=Fa
 	}
 	if query != False: context['query'] = query
 	if tag != False: context['tag'] = tag
+	if results != False: context['results'] = results
 	return HttpResponse(template.render(context, request))
 
 def latest(request):
@@ -157,10 +164,14 @@ def search(request):
 	template = loader.get_template('qdb/search.html')
 	query = request.GET.get('q', '')
 	tag = request.GET.get('tag', '')
-	quote_list = quotes.filter(content__contains=query)
-	if tag: quote_list = quote_list.filter(tags__name__in=[tag])
-	quote_list = quote_list.order_by('-timestamp')
-	return get_quotes('Search Quotes', quote_list, request, query=query, tag=tag)
+	if query: quote_list = SearchQuerySet().filter(content=query, approved=True)
+	else: quote_list = quotes.order_by("-timestamp")
+	if tag:
+		print(1)
+		ids = list(quote_list.values_list('id', flat=True))
+		print(ids)
+		quote_list = quotes.filter(id__in=ids, tags__name__in=[tag])
+	return get_quotes('Search Quotes', quote_list, request, query=query, tag=tag, results=len(quote_list))
 
 def tags(request):
 	tag_list = Tag.objects.filter(quote__approved=True).annotate(count=Count('quote')).order_by('name').distinct()

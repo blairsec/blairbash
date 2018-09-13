@@ -427,6 +427,10 @@ form button:focus {
 	cursor: default;
 }
 
+.resultnum {
+	color: var(--light-text);
+}
+
 body div:last-child div:last-child[style*="z-index: 2000000000;"] {
 	position: fixed !important;
 	top: 50% !important;

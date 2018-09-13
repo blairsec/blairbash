@@ -11,6 +11,7 @@
 		<div><label>Tag:</label><select style="width: 100%" class="tag-input" name="tag"></select></div>
 		<button type="submit">Search</button>&nbsp;
 		<button type="reset" onclick="resetSelect()">Clear</button>
+		{% if results %}<p class="resultnum">{{ results }} quotes found.</p>{% endif %}
 	</form>
 {% endblock %}
 

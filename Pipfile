@@ -10,6 +10,8 @@ django-autocomplete-light = "*"
 urlobject = "*"
 requests = "*"
 pygal="*"
+whoosh = "*"
+django-haystack = "*"
 
 [dev-packages]
 pytz = "*"
