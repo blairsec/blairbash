@@ -38,7 +38,7 @@ def verify_recaptcha(response):
 def index(request):
 	template = loader.get_template('qdb/index.html')
 	context = {
-		'quotes': quotes.count(),
+		'quotes': Quote.objects.filter(approved=True).count(),
 		'news_list': News.objects.order_by('-timestamp')[:3]
 	}
 	return HttpResponse(template.render(context, request))
