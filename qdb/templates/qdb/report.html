@@ -1,0 +1,32 @@
+{% extends 'qdb/base.html' %}
+
+{% block css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet">
+{% if not verified %}<script src='https://www.google.com/recaptcha/api.js'></script>{% endif %}
+{% endblock %}
+
+{% block content %}
+	<h1>{% block title %}Report Quote #{{ quote.id }}{% endblock %}</h1>
+	{% if messages %}
+		<div class="messages">
+			{% for message in messages %}
+				<div class="message">{{ message }}</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+	<blockquote>{{ quote.content }}</blockquote>
+	{% if not reported %}
+		<form id="reportForm" method="POST">
+			{% csrf_token %}
+			<div><p>Please enter a brief explanation of why you are reporting this quote:</p><textarea required name="reason" placeholder="Reason" form="reportForm" style="resize: vertical"></textarea></div>
+			<button type="submit">Report Quote</button>
+		</form>
+	{% else %}
+		<p>You have already reported this quote.</p>
+	{% endif %}
+{% endblock %}
+
+{% block js %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+{% endblock %}

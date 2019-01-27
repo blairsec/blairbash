@@ -14,7 +14,7 @@ from taggit.models import Tag
 
 from urlobject import URLObject
 
-from .models import Quote, News, Vote
+from .models import Quote, Report, News, Vote
 from .charts import QuotesOverTime, QuotesByHour, QuotesByMonth, QuotesByRating, VoteDistribution
 
 import requests
@@ -146,17 +146,22 @@ def vote_down(request, quote_id):
 	return vote(request, quote_id, 'down')
 
 def report(request, quote_id):
-	if request.method == 'POST' and not request.session.get('reported', {}).get(str(quote_id), False) and (request.session.get('verified', False) or request.body and verify_recaptcha(request.body)):
-		request.session['verified'] = True
+	if request.method == 'POST' and not request.session.get('reported', {}).get(str(quote_id), False):
 		if request.session.get('reported', False) == False: request.session['reported'] = {}
-		request.session['reported'][quote_id] = True
+		request.session['reported'][str(quote_id)] = True
 		request.session.save()
 		quote = get_object_or_404(Quote, pk=quote_id)
-		if not quote.approved: return HttpResponse(status=403)
-		quote.reported = True
-		quote.save()
-		return HttpResponse('')
-	else: return HttpResponse(status=403)
+		report = Report(quote=quote, reason=request.POST['reason'], ip=request.META.get('REMOTE_ADDR' if not os.environ.get('PROXY', False) else 'HTTP_X_REAL_IP'), useragent=request.META.get('HTTP_USER_AGENT'))
+		report.save()
+		return redirect(request.GET.get('prev', '/' + str(quote_id)))
+	elif request.method == 'GET':
+		template = loader.get_template('qdb/report.html')
+		context = {
+			'quote': get_object_or_404(Quote, pk=quote_id),
+			'reported': request.session.get('reported', {}).get(str(quote_id), False)
+		}
+		return HttpResponse(template.render(context, request))
+	else: return redirect(request.GET.get('prev', '/' + str(quote_id)))
 
 def quote(request, quote_id):
 	quote_list = quotes.filter(id=quote_id)

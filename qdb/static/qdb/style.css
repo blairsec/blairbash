@@ -252,7 +252,7 @@ div.quote header .timestamp {
 	color: var(--light-text);
 }
 
-div.quote blockquote {
+div.quote blockquote, blockquote {
 	font-family: Consolas, Monaco, Courier New, monospace;
 	font-size: .8em;
 	margin: 1em;
@@ -434,6 +434,7 @@ form button:focus {
 
 .report:hover {
 	color: black;
+	text-decoration: none;
 }
 
 .report.reported {
@@ -473,6 +474,10 @@ div.g-recaptcha {
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+}
+
+.desktop-spacer {
+	height: 1.5em;
 }
 
 @media only screen and (max-width: 1470px) {
@@ -524,6 +529,10 @@ div.g-recaptcha {
 
 	.spacer {
 		height: 3.5em;
+	}
+
+	.desktop-spacer {
+		height: 0em;
 	}
 
 	.page_nav, .refresh_button {

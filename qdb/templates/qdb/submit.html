@@ -15,7 +15,7 @@
 	{% endif %}
 	<form id="quoteForm" method="POST">
 		{% csrf_token %}
-		<div><label>Content:</label><textarea name="content" form="quoteForm" style="resize: vertical"></textarea></div>
+		<div><label>Content:</label><textarea required name="content" form="quoteForm" style="resize: vertical"></textarea></div>
 		<div><label>Notes:</label><input name="notes" type="text"></div>
 		<div><label>Tags:</label><select style='width: 100%' class="tag-input" multiple="multiple" name="tags[]"></select></div>
 		<button type="submit">Submit Quote for Approval</button>

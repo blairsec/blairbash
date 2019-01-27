@@ -8,7 +8,6 @@ class Quote(models.Model):
 	tags = TaggableManager(blank=True)
 	timestamp = models.DateTimeField(auto_now_add=True)
 	approved = models.BooleanField(default=False)
-	reported = models.BooleanField(default=False)
 	notes = models.TextField(blank=True)
 
 	def __str__(self):
@@ -28,6 +27,16 @@ class Vote(models.Model):
 
 	def __str__(self):
 		return ('+' if self.value >= 0 else '') + str(self.value) + ' #' + str(self.quote.id)
+
+class Report(models.Model):
+	ip = models.GenericIPAddressField()
+	useragent = models.TextField(blank=True)
+	reason = models.TextField(blank=True)
+	timestamp = models.DateTimeField(auto_now_add=True)
+	quote = models.ForeignKey(Quote, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return '#' + str(self.quote.id) + ': ' + self.reason[:100].strip() + ('...' if len(self.reason) > 100 else '')
 
 class News(models.Model):
 	author = models.TextField()

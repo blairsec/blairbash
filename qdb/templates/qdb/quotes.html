@@ -44,7 +44,7 @@
 					</p>
 					<button id="down_{{ quote.id}}" onclick="vote({{ quote.id }}, 'down', event)" class="vote down{% if voted == 'down' %} voted{% endif %}"></button>
 					<p class="timestamp">{{ quote.timestamp }}</p>
-					<p class="report{% if reported %} reported{% endif %}" onclick="report({{ quote.id }}, event)">{% if not reported %}&#x2690; Report{% else %}&#x2691; Reported{% endif %}</p>
+					<a class="report{% if reported %} reported{% endif %}" {% if not reported %}href="/{{ quote.id }}/report?prev={{ request.get_full_path|urlencode }}" {% endif %}onclick="report({{ quote.id }}, event)">{% if not reported %}&#x2690; Report{% else %}&#x2691; Reported{% endif %}</a>
 				</header>
 				<blockquote>{{  quote.content }}</blockquote>
 				<footer{% if not quote.notes and not quote.tags.all %} class="empty"{% endif %}>
@@ -117,14 +117,6 @@
 				verified = true
 			}
 			xhr.send(response)
-		}
-		function report(rid, revent) {
-			id = rid
-			event = revent
-			action = 'report'
-			!verified ? grecaptcha.ready(function() {
-				grecaptcha.execute()
-			}) : reportFunc()
 		}
 		function performAction (response) {
 			console.log('verified')
