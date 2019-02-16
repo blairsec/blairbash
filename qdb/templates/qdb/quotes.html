@@ -51,7 +51,7 @@
 					{% if quote.notes %}<p class="notes">{{ quote.notes }}</p>{% endif %}
 					{% if quote.tags.all %}<p class="tags">
 						{% for tag in quote.tags.all %}
-							<a href="/search?tag={{ tag|urlencode }}" class="tag">{{ tag }}</a>
+							<a href="/search?tag={{ tag|urlencode }}" class="tag">{{ tag }}</a>{% if not forloop.last %},{% endif %}
 						{% endfor %}
 					</p>{% endif %}
 				</footer>
