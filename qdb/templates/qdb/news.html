@@ -5,7 +5,7 @@
 		<h1>{% block title %}News{% endblock %}</h1>
 		{% for news in news_list %}
 			<div class="news-item">
-				{{ news.content }}
+				{{ news.content|safe }}
 				<div class="news-author">
 					{{ news.author }}, {{ news.timestamp }}
 				</div>
