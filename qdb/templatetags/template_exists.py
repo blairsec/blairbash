@@ -6,6 +6,6 @@ register = template.Library()
 @register.filter
 @stringfilter
 def template_exists(name):
-	try: template.loader.get_template(value)
+	try: template.loader.get_template(name)
 	except template.TemplateDoesNotExist: return False
 	return True
