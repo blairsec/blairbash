@@ -1,6 +1,9 @@
 {% load static %}
 <html>
 	<head>
+		{% if "analytics"|template_exists %}
+			{% include analytics %}
+		{% endif %}
 		<title>Blairbash.org | {% block title %}{% endblock %}</title>
 		<link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
 		<link rel="stylesheet" href="{% static 'qdb/style.css' %}">

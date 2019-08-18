@@ -29,6 +29,16 @@ def extend_sqlite(connection=None, **kwargs):
 		sqlite3.enable_callback_tracebacks(True)
 		connection.connection.create_function("sqrt", 1, math.sqrt)
 
+from django import template
+from djang.template.defaultfilters import stringfilter
+register = template.Library()
+@register.filter
+@stringfilter
+def template_exists(name):
+	try: template.loader.get_template(value)
+	except template.TemplateDoesNotExist: return False
+	return True
+
 quotes = Quote.objects.annotate(score=Coalesce(Sum('vote__value'), 0), votes=Count('vote')).filter(approved=True)
 
 def verify_recaptcha(response):
