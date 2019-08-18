@@ -30,7 +30,7 @@ def extend_sqlite(connection=None, **kwargs):
 		connection.connection.create_function("sqrt", 1, math.sqrt)
 
 from django import template
-from djang.template.defaultfilters import stringfilter
+from django.template.defaultfilters import stringfilter
 register = template.Library()
 @register.filter
 @stringfilter
