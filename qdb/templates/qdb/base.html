@@ -2,8 +2,8 @@
 {% load template_exists %}
 <html>
 	<head>
-		{% if "analytics"|template_exists %}
-			{% include analytics %}
+		{% if "analytics.html"|template_exists %}
+			{% include "analytics.html" %}
 		{% endif %}
 		<title>Blairbash.org | {% block title %}{% endblock %}</title>
 		<link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
