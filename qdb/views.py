@@ -37,11 +37,11 @@ quotes = Quote.objects.annotate(score=Coalesce(Sum('vote__value'), 0), votes=Cou
 def api(request):
 	query = request.GET.get('q', '')
 	tag = request.GET.get('tag', '')
-	quote_list = quotes.filter(content__contains=query)
+	quote_list = quotes.annotate(upvotes=Count('vote', filter=Q(vote__value=1)), downvotes=Count('vote', filter=Q(vote__value=-1))).filter(content__contains=query)
 	if tag: quote_list = quote_list.filter(tags__name__in=[tag])
-	fields = request.GET.get('fields', "id,content,notes,score,votes,timestamp").split(",")
-	if set(fields) - {"id", "content", "notes", "score", "votes", "timestamp"} != set():
-		return JsonResponse({"error": "field not in id,content,notes,score,votes,timestamp"})
+	fields = request.GET.get('fields', "id,content,notes,upvotes,downvotes,score,votes,timestamp").split(",")
+	if set(fields) - {"id", "content", "notes", "upvotes", "downvotes", "score", "votes", "timestamp"} != set():
+		return JsonResponse({"error": "field not in id,content,notes,upvotes,downvotes,score,votes,timestamp"})
 	elif len(set(fields)) != len(fields):
 		return JsonResponse({"error": "duplicate field name"})
 	quote_list = list(quote_list.values(*fields))
