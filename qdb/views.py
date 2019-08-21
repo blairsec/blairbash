@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template import loader
 from django.shortcuts import get_object_or_404, redirect
@@ -8,6 +8,9 @@ from django.contrib import messages
 
 import os
 import json
+
+import io
+import csv
 
 from dal import autocomplete
 from taggit.models import Tag
@@ -30,6 +33,26 @@ def extend_sqlite(connection=None, **kwargs):
 		connection.connection.create_function("sqrt", 1, math.sqrt)
 
 quotes = Quote.objects.annotate(score=Coalesce(Sum('vote__value'), 0), votes=Count('vote')).filter(approved=True)
+
+def api(request):
+	query = request.GET.get('q', '')
+	tag = request.GET.get('tag', '')
+	quote_list = quotes.filter(content__contains=query)
+	if tag: quote_list = quote_list.filter(tags__name__in=[tag])
+	fields = request.GET.get('fields', "id,content,notes,score,votes,timestamp").split(",")
+	if set(fields) - {"id", "content", "notes", "score", "votes", "timestamp"} != set():
+		return JsonResponse({"error": "field not in id,content,notes,score,votes,timestamp"})
+	elif len(set(fields)) != len(fields):
+		return JsonResponse({"error": "duplicate field name"})
+	quote_list = list(quote_list.values(*fields))
+	if request.path.endswith(".json"):
+		return JsonResponse(quote_list, safe=False)
+	else:
+		csvfile = io.StringIO()
+		writer = csv.DictWriter(csvfile, quote_list[0].keys())
+		writer.writeheader()
+		writer.writerows(quote_list)
+		return HttpResponse(csvfile.getvalue(), content_type="text/csv")
 
 def verify_recaptcha(response):
 	response = requests.post('https://www.google.com/recaptcha/api/siteverify', data={ "secret": os.environ['RECAPTCHA_SECRET'], "response": ''.join(chr(x) for x in response) }).text
