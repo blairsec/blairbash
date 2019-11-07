@@ -156,7 +156,7 @@ def vote(request, quote_id, direction):
 			del request.session['voted'][str(quote_id)]
 		vote = Vote(quote=quote, ip=request.META.get('REMOTE_ADDR' if not os.environ.get('PROXY', False) else 'HTTP_X_REAL_IP'), useragent=request.META.get('HTTP_USER_AGENT'), value=1 if direction == 'up' else -1)
 		vote.save()
-		request.session['voted'][quote_id] = direction 
+		request.session['voted'][quote_id] = direction
 		request.session['votes'][quote_id] = vote.id
 		request.session.save()
 		return HttpResponse('')
@@ -219,10 +219,10 @@ def stats(request):
 		'quotes_over_time': QuotesOverTime().generate(),
 		'quotes_by_hour': QuotesByHour().generate(),
 		'quotes_by_month': QuotesByMonth().generate(),
-		'quotes_by_rating': QuotesByRating().generate(), 
+		'quotes_by_rating': QuotesByRating().generate(),
 		'vote_distribution': VoteDistribution().generate(),
 	}
-	return HttpResponse(template.render(context, request)) 
+	return HttpResponse(template.render(context, request))
 
 def submit(request):
 	if request.method == 'POST':
