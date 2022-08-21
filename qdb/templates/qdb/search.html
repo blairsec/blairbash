@@ -9,6 +9,7 @@
 	<form class="search" action="/search">
 		<div><label>Find:</label><input value="{{ query }}" type="text" name="q"></div>
 		<div><label>Tag:</label><select style="width: 100%" class="tag-input" name="tag"></select></div>
+		<div><label>Search in notes instead:</label><input type="checkbox" name="sn"></div>
 		<button type="submit">Search</button>&nbsp;
 		<button type="reset" onclick="resetSelect()">Clear</button>
 	</form>
