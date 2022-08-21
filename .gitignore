@@ -1,3 +1,4 @@
 db.sqlite3
 chirpy.json
 qdb/templates/analytics.html
+__pycache__

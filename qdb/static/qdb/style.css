@@ -4,6 +4,7 @@
 	--background: #fbfbfb;
 	--text: black;
 	--light-text: #555555;
+	--down-vote: #00c3ff;
 }
 
 * {
@@ -232,8 +233,12 @@ div.quote header button.vote.down::after {
     margin-bottom: 4px;
 }
 
-div.quote header button.vote.voted::after {
+div.quote header button.vote.voted.up::after {
 	border-color: var(--primary);
+}
+
+div.quote header button.vote.voted.down::after {
+	border-color: var(--down-vote);
 }
 
 div.quote header .votes {
@@ -483,7 +488,7 @@ div.g-recaptcha {
 @media only screen and (max-width: 1470px) {
 	.chart {
 		width: 100%;
-	}	
+	}
 }
 
 @media only screen and (max-width: 830px) {

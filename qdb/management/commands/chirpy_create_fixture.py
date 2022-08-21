@@ -71,7 +71,7 @@ class Command(BaseCommand):
 					"notes": q[2] if q[2] else "",
 					"reported": q[7],
 					"timestamp": pytz.timezone('US/Eastern').localize(q[5], is_dst=False).astimezone(pytz.utc).isoformat().replace('+00:00', 'Z')
-				} 
+				}
 			}
 			objects.append(quote)
 			# create up votes
